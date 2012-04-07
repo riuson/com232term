@@ -135,6 +135,11 @@ namespace com232term
             Regex regex = new Regex(@"(?<=\()COM\d*(?=\))", RegexOptions.IgnoreCase);
             if (regex.IsMatch(value))
                 return regex.Match(value).Value;
+
+            regex = new Regex(@"COM\d*", RegexOptions.IgnoreCase);
+            if (regex.IsMatch(value))
+                return regex.Match(value).Value;
+
             return String.Empty;
         }
     }

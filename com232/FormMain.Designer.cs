@@ -13,6 +13,7 @@
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
+            this.mWorker.Dispose();
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -50,7 +51,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(this.rtbLog);
-            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(834, 404);
+            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(859, 404);
             toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
@@ -68,7 +69,7 @@
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(834, 404);
+            this.rtbLog.Size = new System.Drawing.Size(859, 404);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -79,7 +80,7 @@
             this.tssbConnect});
             this.tsConnectionMenu.Location = new System.Drawing.Point(3, 0);
             this.tsConnectionMenu.Name = "tsConnectionMenu";
-            this.tsConnectionMenu.Size = new System.Drawing.Size(80, 25);
+            this.tsConnectionMenu.Size = new System.Drawing.Size(111, 25);
             this.tsConnectionMenu.TabIndex = 0;
             // 
             // tssbConnect
@@ -95,6 +96,7 @@
             this.tssbConnect.Name = "tssbConnect";
             this.tssbConnect.Size = new System.Drawing.Size(68, 22);
             this.tssbConnect.Text = "Connect";
+            this.tssbConnect.ButtonClick += new System.EventHandler(this.OnConnectionClick);
             // 
             // tscbPortName
             // 

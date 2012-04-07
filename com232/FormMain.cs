@@ -19,6 +19,9 @@ namespace com232term
 
             this.mWorker = new Worker();
             this.mWorker.OnSettingsChanged += new EventHandler(mWorker_OnSettingsChanged);
+            this.mWorker.OnOpened += new EventHandler(mWorker_OnOpened);
+            this.mWorker.OnClosed += new EventHandler(mWorker_OnClosed);
+            this.mWorker.OnDataReceived += new EventHandler<DataReceivedEventArgs>(mWorker_OnDataReceived);
 
             this.tscbPortName.Items.Clear();
             this.tscbPortName.Items.AddRange(Worker.PortsList);
@@ -38,19 +41,47 @@ namespace com232term
 
         private void mWorker_OnSettingsChanged(object sender, EventArgs e)
         {
+            this.UpdateConnectButtonText();
+        }
+
+        private void UpdateConnectButtonText()
+        {
+            string state;
+            if (this.mWorker.IsOpen)
+                state = "Close";
+            else
+                state = "Open";
+
             this.tssbConnect.Text = String.Format(
-                "{0}, {1}, {2}, {3}",
+                "{4}: {0}, {1}, {2}, {3}",
                 this.mWorker.Settings.PortName.ExtractPortName(),
                 this.mWorker.Settings.Baudrate,
                 this.mWorker.Settings.Parity,
-                this.mWorker.Settings.StopBits);
+                this.mWorker.Settings.StopBits,
+                state);
 
             this.tssbConnect.ToolTipText = String.Format(
-                "{0}, {1}, {2}, {3}",
+                "{4}: {0}, {1}, {2}, {3}",
                 this.mWorker.Settings.PortName,
                 this.mWorker.Settings.Baudrate,
                 this.mWorker.Settings.Parity,
-                this.mWorker.Settings.StopBits);
+                this.mWorker.Settings.StopBits,
+                state);
+        }
+
+        private void mWorker_OnClosed(object sender, EventArgs e)
+        {
+            this.UpdateConnectButtonText();
+        }
+
+        private void mWorker_OnOpened(object sender, EventArgs e)
+        {
+            this.UpdateConnectButtonText();
+        }
+
+        private void mWorker_OnDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            this.rtbLog.AppendText(e.Value.Length.ToString() + "\n");
         }
 
         private void OnPortSettingsChanged(object sender, EventArgs e)
@@ -83,6 +114,18 @@ namespace com232term
 
             // setup
             this.mWorker.SetPortName(portname, baudrate, parity, stopbits);
+        }
+
+        private void OnConnectionClick(object sender, EventArgs e)
+        {
+            if (this.mWorker.IsOpen)
+            {
+                this.mWorker.Close();
+            }
+            else
+            {
+                this.mWorker.Open();
+            }
         }
     }
 }

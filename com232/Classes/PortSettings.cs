@@ -19,5 +19,15 @@ namespace com232term.Classes
         public Parity Parity { get; set; }
         public int Baudrate { get; set; }
         public StopBits StopBits { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format(
+                "{0}, {1}, {2}, {3}",
+                this.PortName,
+                this.Baudrate,
+                this.Parity,
+                this.StopBits);
+        }
     }
 }
