@@ -1,0 +1,8 @@
+/*.pdb
+/*.suo
+/*.exe
+/*.dll
+*/bin
+*/obj
+*/debug
+*/Thumbs.db
