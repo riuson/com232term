@@ -9,7 +9,7 @@ using System.Data;
 using System.Xml;
 using System.IO.Ports;
 
-namespace com232term.Classes
+namespace com232term.Classes.Options
 {
     /// <summary>
     /// Класс для сериализации и десериализации классов настроек, и обращения к ним в виде синглетона.
@@ -21,10 +21,12 @@ namespace com232term.Classes
         private static object mLock = new object();
 
         public PortSettings PortOptions { get; set; }
+        public LogSettings LogOptions { get; set; }
 
         private Options ()
 	    {
             this.PortOptions = new PortSettings();
+            this.LogOptions = new LogSettings();
 	    }
 
         public static string FileName

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using com232term.Classes;
+using com232term.Classes.Options;
 
 namespace com232term
 {
@@ -90,7 +91,8 @@ namespace com232term
 
         private void mWorker_OnDataReceived(object sender, DataReceivedEventArgs e)
         {
-            this.rtbLog.AppendText(e.Value.Length.ToString() + "\n");
+            this.rtbLog.AppendText(ArraysConverter.FromArray(e.Value));
+            this.rtbLog.AppendText("\n");
         }
 
         private void OnPortSettingsChanged(object sender, EventArgs e)

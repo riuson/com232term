@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO.Ports;
 
-namespace com232term.Classes
+namespace com232term.Classes.Options
 {
     public class PortSettings
     {

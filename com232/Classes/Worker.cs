@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO.Ports;
 using System.Threading;
+using com232term.Classes.Options;
 
 namespace com232term.Classes
 {
@@ -64,7 +65,6 @@ namespace com232term.Classes
         private Queue<ThreadTask> mIncomingTasksQueue;
         private Queue<ThreadTask> mCompletedTasksQueue;
         private SerialPortFixed mPort;
-        private ThreadTask mTask;
         private bool mDataReceived;
         private System.Windows.Forms.Timer mTimerSync;
 
