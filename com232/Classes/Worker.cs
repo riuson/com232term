@@ -72,16 +72,16 @@ namespace com232term.Classes
         public event EventHandler<DataReceivedEventArgs> OnDataReceived;
         public event EventHandler OnOpened;
         public event EventHandler OnClosed;
-        public PortSettings Settings { get; private set; }
+        public PortSettings PortOptions { get; private set; }
 
         public Worker()
         {
-            this.Settings = new PortSettings();
+            this.PortOptions = new PortSettings();
             this.mStopEvent = new AutoResetEvent(false);
             this.mIncomingTasksQueue = new Queue<ThreadTask>();
             this.mCompletedTasksQueue = new Queue<ThreadTask>();
             this.mNeedStop = false;
-            this.mPort = new SerialPortFixed(this.Settings.PortName, this.Settings.Baudrate, this.Settings.Parity, 8, this.Settings.StopBits);
+            this.mPort = new SerialPortFixed(this.PortOptions.PortName, this.PortOptions.Baudrate, this.PortOptions.Parity, 8, this.PortOptions.StopBits);
             this.mThread = new Thread(new ThreadStart(this.Work));
             this.mDataReceived = false;
 
@@ -103,10 +103,10 @@ namespace com232term.Classes
 
         public void SetPortName(string portname, int baudrate, Parity parity, StopBits stopbits)
         {
-            this.Settings.PortName = portname;
-            this.Settings.Baudrate = baudrate;
-            this.Settings.Parity = parity;
-            this.Settings.StopBits = stopbits;
+            this.PortOptions.PortName = portname;
+            this.PortOptions.Baudrate = baudrate;
+            this.PortOptions.Parity = parity;
+            this.PortOptions.StopBits = stopbits;
 
             if (this.OnSettingsChanged != null)
                 this.OnSettingsChanged(this, EventArgs.Empty);
@@ -116,7 +116,10 @@ namespace com232term.Classes
         {
             while (!this.mNeedStop)
             {
-                this.CheckPortSettings();
+                Thread.Sleep(100);
+
+                if (!this.CheckPortSettings())
+                    continue;
 
                 ThreadTask task = null;
 
@@ -170,34 +173,36 @@ namespace com232term.Classes
                         }
                     }
                 }
-
-                Thread.Sleep(100);
             }
             this.mStopEvent.Set();
         }
 
-        private void CheckPortSettings()
+        private bool CheckPortSettings()
         {
             lock (this.mPort)
             {
-                if (this.mPort.PortName != this.Settings.PortName.ExtractPortName() ||
-                    this.mPort.BaudRate != this.Settings.Baudrate ||
-                    this.mPort.Parity != this.Settings.Parity ||
-                    this.mPort.StopBits != this.Settings.StopBits)
+                if (this.PortOptions.PortName == String.Empty)
+                    return false;
+
+                if (this.mPort.PortName != this.PortOptions.PortName.ExtractPortName() ||
+                    this.mPort.BaudRate != this.PortOptions.Baudrate ||
+                    this.mPort.Parity != this.PortOptions.Parity ||
+                    this.mPort.StopBits != this.PortOptions.StopBits)
                 {
                     bool opened = this.mPort.IsOpen;
                     if (opened)
                         this.mPort.Close();
 
-                    this.mPort.PortName = this.Settings.PortName.ExtractPortName();
-                    this.mPort.BaudRate = this.Settings.Baudrate;
-                    this.mPort.Parity = this.Settings.Parity;
-                    this.mPort.StopBits = this.Settings.StopBits;
+                    this.mPort.PortName = this.PortOptions.PortName.ExtractPortName();
+                    this.mPort.BaudRate = this.PortOptions.Baudrate;
+                    this.mPort.Parity = this.PortOptions.Parity;
+                    this.mPort.StopBits = this.PortOptions.StopBits;
 
                     if (opened)
                         this.mPort.Open();
                 }
             }
+            return true;
         }
 
         private void SendInternal(string msg)

@@ -132,6 +132,9 @@ namespace com232term
     {
         public static string ExtractPortName(this string value)
         {
+            if (value == null)
+                return String.Empty;
+
             Regex regex = new Regex(@"(?<=\()COM\d*(?=\))", RegexOptions.IgnoreCase);
             if (regex.IsMatch(value))
                 return regex.Match(value).Value;

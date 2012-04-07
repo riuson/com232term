@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ExtensionAttribute.cs" />
+    <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\PortSettings.cs" />
     <Compile Include="Classes\SerialPortFixed.cs">
       <SubType>Component</SubType>

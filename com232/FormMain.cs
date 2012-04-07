@@ -37,6 +37,11 @@ namespace com232term
             this.tscbStopBits.Items.Clear();
             foreach (System.IO.Ports.StopBits a in Worker.StopBitsList)
                 this.tscbStopBits.Items.Add(a);
+
+            this.tscbPortName.SelectedItem = Options.Instance.PortOptions.PortName;
+            this.tscbBaudrates.SelectedItem = Options.Instance.PortOptions.Baudrate;
+            this.tscbParity.SelectedItem = Options.Instance.PortOptions.Parity;
+            this.tscbStopBits.SelectedItem = Options.Instance.PortOptions.StopBits;
         }
 
         private void mWorker_OnSettingsChanged(object sender, EventArgs e)
@@ -54,18 +59,18 @@ namespace com232term
 
             this.tssbConnect.Text = String.Format(
                 "{4}: {0}, {1}, {2}, {3}",
-                this.mWorker.Settings.PortName.ExtractPortName(),
-                this.mWorker.Settings.Baudrate,
-                this.mWorker.Settings.Parity,
-                this.mWorker.Settings.StopBits,
+                this.mWorker.PortOptions.PortName.ExtractPortName(),
+                this.mWorker.PortOptions.Baudrate,
+                this.mWorker.PortOptions.Parity,
+                this.mWorker.PortOptions.StopBits,
                 state);
 
             this.tssbConnect.ToolTipText = String.Format(
                 "{4}: {0}, {1}, {2}, {3}",
-                this.mWorker.Settings.PortName,
-                this.mWorker.Settings.Baudrate,
-                this.mWorker.Settings.Parity,
-                this.mWorker.Settings.StopBits,
+                this.mWorker.PortOptions.PortName,
+                this.mWorker.PortOptions.Baudrate,
+                this.mWorker.PortOptions.Parity,
+                this.mWorker.PortOptions.StopBits,
                 state);
         }
 
@@ -77,6 +82,10 @@ namespace com232term
         private void mWorker_OnOpened(object sender, EventArgs e)
         {
             this.UpdateConnectButtonText();
+
+            // save port settings
+            Options.Instance.PortOptions = this.mWorker.PortOptions;
+            Options.Save();
         }
 
         private void mWorker_OnDataReceived(object sender, DataReceivedEventArgs e)
