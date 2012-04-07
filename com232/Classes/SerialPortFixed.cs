@@ -123,5 +123,19 @@ namespace com232term
                 return result.ToArray();
             }
         }
+
+    }
+    /// <summary>
+    /// Extension to extract port name from string
+    /// </summary>
+    public static class StringPortNameExtension
+    {
+        public static string ExtractPortName(this string value)
+        {
+            Regex regex = new Regex(@"(?<=\()COM\d*(?=\))", RegexOptions.IgnoreCase);
+            if (regex.IsMatch(value))
+                return regex.Match(value).Value;
+            return String.Empty;
+        }
     }
 }
