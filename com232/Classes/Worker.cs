@@ -69,7 +69,7 @@ namespace com232term.Classes
         private System.Windows.Forms.Timer mTimerSync;
 
         public event EventHandler OnSettingsChanged;
-        public event EventHandler<DataReceivedEventArgs> OnDataReceived;
+        public event EventHandler<DataLogEventArgs> OnDataLog;
         public event EventHandler OnOpened;
         public event EventHandler OnClosed;
         public PortSettings PortOptions { get; private set; }
@@ -144,8 +144,8 @@ namespace com232term.Classes
                         task = new ThreadTask();
                         task.Completed = delegate()
                         {
-                            if (this.OnDataReceived != null)
-                                this.OnDataReceived(this, new DataReceivedEventArgs(readedBytes));
+                            if (this.OnDataLog != null)
+                                this.OnDataLog(this, new DataLogEventArgs(Direction.Received, readedBytes));
                         };
                         lock (this.mCompletedTasksQueue)
                         {
@@ -328,13 +328,22 @@ namespace com232term.Classes
         public ThreadedMethod Completed { get; set; }
     }
 
-    public class DataReceivedEventArgs : EventArgs
+    public class DataLogEventArgs : EventArgs
     {
-        public DataReceivedEventArgs(byte []value)
+        public DataLogEventArgs(Direction direction, byte []value)
         {
+            this.DataDirection = direction;
+            this.Time = DateTime.Now;
             this.Value = value;
         }
 
+        public Direction DataDirection { get; private set; }
+        public DateTime Time { get; private set; }
         public byte[] Value { get; private set; }
+    }
+    public enum Direction
+    {
+        Transmitted,
+        Received
     }
 }

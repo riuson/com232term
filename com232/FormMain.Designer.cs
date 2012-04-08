@@ -43,7 +43,6 @@
             this.tsddbColors = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiColorTransmitted = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorReceived = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiColorSpecialCharacters = new System.Windows.Forms.ToolStripMenuItem();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -165,8 +164,7 @@
             this.tsddbColors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsddbColors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiColorTransmitted,
-            this.tsmiColorReceived,
-            this.tsmiColorSpecialCharacters});
+            this.tsmiColorReceived});
             this.tsddbColors.Image = ((System.Drawing.Image)(resources.GetObject("tsddbColors.Image")));
             this.tsddbColors.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbColors.Name = "tsddbColors";
@@ -186,13 +184,6 @@
             this.tsmiColorReceived.Size = new System.Drawing.Size(170, 22);
             this.tsmiColorReceived.Text = "Received";
             this.tsmiColorReceived.Click += new System.EventHandler(this.OnColorsClick);
-            // 
-            // tsmiColorSpecialCharacters
-            // 
-            this.tsmiColorSpecialCharacters.Name = "tsmiColorSpecialCharacters";
-            this.tsmiColorSpecialCharacters.Size = new System.Drawing.Size(170, 22);
-            this.tsmiColorSpecialCharacters.Text = "Special Characters";
-            this.tsmiColorSpecialCharacters.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // FormMain
             // 
@@ -229,7 +220,6 @@
         private System.Windows.Forms.ToolStripDropDownButton tsddbColors;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTransmitted;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorReceived;
-        private System.Windows.Forms.ToolStripMenuItem tsmiColorSpecialCharacters;
     }
 }
 

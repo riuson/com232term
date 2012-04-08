@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using com232term.Classes.Options;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace com232term.Classes
 {
@@ -50,10 +51,74 @@ namespace com232term.Classes
             }
         }
 
-        public void Log(byte[] array)
+        public void LogData(DateTime time, Direction direction, byte[] array)
         {
-            this.mBox.AppendText(ArraysConverter.FromArray(array));
-            this.mBox.AppendText("\n");
+            Color foreColor;
+            if (direction == Direction.Received)
+                foreColor = this.LogOptions.ReceivedColor;
+            else
+                foreColor = this.LogOptions.TransmittedColor;
+
+
+            // time
+            this.mBox.AppendText(String.Format("\n"));
+            
+            if (direction == Direction.Received)
+                this.mBox.AppendText(String.Format(">>> "));
+            else
+                this.mBox.AppendText(String.Format("<<< "));
+
+            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), foreColor);
+            this.mBox.AppendText(String.Format("\n"));
+            
+            LogSettings.DisplayFormat format = Options.Options.Instance.LogOptions.Format;
+
+            if ((format & LogSettings.DisplayFormat.Hex) == LogSettings.DisplayFormat.Hex)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in array)
+                {
+                    sb.AppendFormat("{0:X2} ", b);
+                }
+                sb.Append("\n");
+                this.mBox.AppendText(sb.ToString(), foreColor);
+            }
+
+            if ((format & LogSettings.DisplayFormat.Ascii) == LogSettings.DisplayFormat.Ascii)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach(char c in (Encoding.ASCII.GetString(array)))
+                {
+                    if (!Char.IsControl(c) || (c == '\r') || (c == '\n'))
+                        sb.Append(c);
+                    else
+                    {
+                        int a = (int)c;
+                        sb.AppendFormat("'\\x{0:x4}'", a);
+                    }
+                }
+
+                sb.Append("\n");
+                this.mBox.AppendText(sb.ToString(), foreColor);
+            }
+
+            if ((format & LogSettings.DisplayFormat.Utf8) == LogSettings.DisplayFormat.Utf8)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (char c in (Encoding.UTF8.GetString(array)))
+                {
+                    if (Char.IsLetterOrDigit(c))
+                        sb.Append(c);
+                    else
+                    {
+                        int a = (int)c;
+                        sb.AppendFormat("'\\x{0:x4}'", a);
+                    }
+                }
+
+                sb.Append("\n");
+                this.mBox.AppendText(sb.ToString(), foreColor);
+            }
         }
     }
 }

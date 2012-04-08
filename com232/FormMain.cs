@@ -23,7 +23,7 @@ namespace com232term
             this.mWorker.OnSettingsChanged += new EventHandler(mWorker_OnSettingsChanged);
             this.mWorker.OnOpened += new EventHandler(mWorker_OnOpened);
             this.mWorker.OnClosed += new EventHandler(mWorker_OnClosed);
-            this.mWorker.OnDataReceived += new EventHandler<DataReceivedEventArgs>(mWorker_OnDataReceived);
+            this.mWorker.OnDataLog += new EventHandler<DataLogEventArgs>(mWorker_OnDataLog);
 
             this.mLogger = new Logger(this.rtbLog);
 
@@ -67,7 +67,6 @@ namespace com232term
             this.mLogger.LogOptions = Options.Instance.LogOptions;
             this.tsmiColorReceived.ForeColor = this.mLogger.LogOptions.ReceivedColor;
             this.tsmiColorTransmitted.ForeColor = this.mLogger.LogOptions.TransmittedColor;
-            this.tsmiColorSpecialCharacters.ForeColor = this.mLogger.LogOptions.SpecialCharactersColor;
         }
 
         private void SetDefaultValues()
@@ -158,9 +157,9 @@ namespace com232term
             Options.Save();
         }
 
-        private void mWorker_OnDataReceived(object sender, DataReceivedEventArgs e)
+        private void mWorker_OnDataLog(object sender, DataLogEventArgs e)
         {
-            this.mLogger.Log(e.Value);
+            this.mLogger.LogData(e.Time, e.DataDirection, e.Value);
         }
 
         private void OnPortSettingsChanged(object sender, EventArgs e)
@@ -233,20 +232,6 @@ namespace com232term
                         this.mLogger.LogOptions.TransmittedColor = dialog.Color;
                         Options.Instance.LogOptions.TransmittedColor = dialog.Color;
                         this.tsmiColorTransmitted.ForeColor = dialog.Color;
-                        Options.Save();
-                    }
-                }
-            }
-            if (sender == this.tsmiColorSpecialCharacters)
-            {
-                using (ColorDialog dialog = new ColorDialog())
-                {
-                    dialog.Color = this.mLogger.LogOptions.SpecialCharactersColor;
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        this.mLogger.LogOptions.SpecialCharactersColor = dialog.Color;
-                        Options.Instance.LogOptions.SpecialCharactersColor = dialog.Color;
-                        this.tsmiColorSpecialCharacters.ForeColor = dialog.Color;
                         Options.Save();
                     }
                 }
