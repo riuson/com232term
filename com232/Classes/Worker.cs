@@ -70,6 +70,7 @@ namespace com232term.Classes
 
         public event EventHandler OnSettingsChanged;
         public event EventHandler<DataLogEventArgs> OnDataLog;
+        public event EventHandler<MessageLogEventArgs> OnMessageLog;
         public event EventHandler OnOpened;
         public event EventHandler OnClosed;
         public PortSettings PortOptions { get; private set; }
@@ -200,6 +201,20 @@ namespace com232term.Classes
 
                     if (opened)
                         this.mPort.Open();
+
+                    lock (this.mIncomingTasksQueue)
+                    {
+                        ThreadTask task = new ThreadTask();
+                        task.Completed = delegate()
+                        {
+                            this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}",
+                                this.PortOptions.PortName,
+                                this.PortOptions.Baudrate,
+                                this.PortOptions.Parity,
+                                this.PortOptions.StopBits));
+                        };
+                        this.mIncomingTasksQueue.Enqueue(task);
+                    }
                 }
             }
             return true;
@@ -233,6 +248,12 @@ namespace com232term.Classes
             {
                 if (this.OnOpened != null)
                     this.OnOpened(this, EventArgs.Empty);
+
+                this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}",
+                    this.PortOptions.PortName,
+                    this.PortOptions.Baudrate,
+                    this.PortOptions.Parity,
+                    this.PortOptions.StopBits));
             };
 
             lock (this.mIncomingTasksQueue)
@@ -256,6 +277,9 @@ namespace com232term.Classes
             {
                 if (this.OnClosed != null)
                     this.OnClosed(this, EventArgs.Empty);
+
+                this.LogMessage(String.Format("Port closed: {0}",
+                    this.PortOptions.PortName));
             };
 
             lock (this.mIncomingTasksQueue)
@@ -308,6 +332,12 @@ namespace com232term.Classes
                     task.Completed();
             }
         }
+
+        private void LogMessage(string message)
+        {
+            if (this.OnMessageLog != null)
+                this.OnMessageLog(this, new MessageLogEventArgs(message));
+        }
     }
 
     public delegate void ThreadedMethod();
@@ -345,5 +375,17 @@ namespace com232term.Classes
     {
         Transmitted,
         Received
+    }
+
+    public class MessageLogEventArgs : EventArgs
+    {
+        public MessageLogEventArgs(string message)
+        {
+            this.Message = message;
+            this.Time = DateTime.Now;
+        }
+
+        public string Message { get; private set; }
+        public DateTime Time { get; private set; }
     }
 }

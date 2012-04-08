@@ -120,5 +120,20 @@ namespace com232term.Classes
                 this.mBox.AppendText(sb.ToString(), foreColor);
             }
         }
+
+        public void LogMessage(DateTime time, string message)
+        {
+            Color foreColor;
+            foreColor = this.LogOptions.SystemColor;
+
+
+            // time
+            this.mBox.AppendText(String.Format("\n"));
+            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.LogOptions.TimeColor);
+            this.mBox.AppendText(String.Format("\n"));
+
+            this.mBox.AppendText(message, foreColor);
+            this.mBox.AppendText("\n");
+        }
     }
 }

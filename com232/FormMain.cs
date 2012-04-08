@@ -24,6 +24,7 @@ namespace com232term
             this.mWorker.OnOpened += new EventHandler(mWorker_OnOpened);
             this.mWorker.OnClosed += new EventHandler(mWorker_OnClosed);
             this.mWorker.OnDataLog += new EventHandler<DataLogEventArgs>(mWorker_OnDataLog);
+            this.mWorker.OnMessageLog += new EventHandler<MessageLogEventArgs>(mWorker_OnMessageLog);
 
             this.mLogger = new Logger(this.rtbLog);
 
@@ -162,6 +163,11 @@ namespace com232term
         private void mWorker_OnDataLog(object sender, DataLogEventArgs e)
         {
             this.mLogger.LogData(e.Time, e.DataDirection, e.Value);
+        }
+
+        private void mWorker_OnMessageLog(object sender, MessageLogEventArgs e)
+        {
+            this.mLogger.LogMessage(e.Time, e.Message);
         }
 
         private void OnPortSettingsChanged(object sender, EventArgs e)
