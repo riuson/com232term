@@ -107,7 +107,7 @@ namespace com232term.Classes
                 StringBuilder sb = new StringBuilder();
                 foreach (char c in (Encoding.UTF8.GetString(array)))
                 {
-                    if (Char.IsLetterOrDigit(c))
+                    if (!Char.IsControl(c) || (c == '\r') || (c == '\n'))
                         sb.Append(c);
                     else
                     {
