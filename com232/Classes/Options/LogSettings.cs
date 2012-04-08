@@ -10,22 +10,22 @@ namespace com232term.Classes.Options
         [Flags]
         public enum DisplayFormat
         {
-            Hex,
-            Ascii,
-            Utf8
+            Auto = 0x0,
+            Hex = 0x1,
+            Ascii = 0x2,
+            Utf8 = 0x04
         }
 
         public LogSettings()
         {
             this.TransmittedColor = Color.Green;
             this.ReceivedColor = Color.Blue;
-            this.SpecialSymbolsColor = Color.Red;
+            this.SpecialCharactersColor = Color.Red;
             this.Format = DisplayFormat.Hex;
         }
-
-        public Color TransmittedColor { get; set; }
-        public Color ReceivedColor { get; set; }
-        public Color SpecialSymbolsColor { get; set; }
+        public ColorSerialized TransmittedColor { get; set; }
+        public ColorSerialized ReceivedColor { get; set; }
+        public ColorSerialized SpecialCharactersColor { get; set; }
         public DisplayFormat Format { get; set; }
     }
 }

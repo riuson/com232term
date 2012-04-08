@@ -13,6 +13,7 @@ namespace com232term
     public partial class FormMain : Form
     {
         private Worker mWorker;
+        private Logger mLogger;
 
         public FormMain()
         {
@@ -24,6 +25,53 @@ namespace com232term
             this.mWorker.OnClosed += new EventHandler(mWorker_OnClosed);
             this.mWorker.OnDataReceived += new EventHandler<DataReceivedEventArgs>(mWorker_OnDataReceived);
 
+            this.mLogger = new Logger(this.rtbLog);
+
+            this.SetDefaultValues();
+
+            this.LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            // load port settings
+            this.tscbPortName.SelectedItem = Options.Instance.PortOptions.PortName;
+            this.tscbBaudrates.SelectedItem = Options.Instance.PortOptions.Baudrate;
+            this.tscbParity.SelectedItem = Options.Instance.PortOptions.Parity;
+            this.tscbStopBits.SelectedItem = Options.Instance.PortOptions.StopBits;
+
+            // load format settings
+            LogSettings.DisplayFormat format = Options.Instance.LogOptions.Format;
+            this.tsddbFormat.Text = "Format: " + format.ToString();
+            if (format == LogSettings.DisplayFormat.Auto)
+            {
+                foreach (ToolStripItem item in this.tsddbFormat.DropDownItems)
+                {
+                    ToolStripMenuItem menuItem = item as ToolStripMenuItem;
+                    LogSettings.DisplayFormat formatItem = (LogSettings.DisplayFormat)menuItem.Tag;
+                    menuItem.Checked = (formatItem == LogSettings.DisplayFormat.Auto);
+                }
+            }
+            else
+            {
+                foreach (ToolStripItem item in this.tsddbFormat.DropDownItems)
+                {
+                    ToolStripMenuItem menuItem = item as ToolStripMenuItem;
+                    LogSettings.DisplayFormat formatItem = (LogSettings.DisplayFormat)menuItem.Tag;
+                    if (formatItem == LogSettings.DisplayFormat.Auto)
+                        continue;
+                    menuItem.Checked = ((format & formatItem) == formatItem);
+                }
+            }
+
+            this.mLogger.LogOptions = Options.Instance.LogOptions;
+            this.tsmiColorReceived.ForeColor = this.mLogger.LogOptions.ReceivedColor;
+            this.tsmiColorTransmitted.ForeColor = this.mLogger.LogOptions.TransmittedColor;
+            this.tsmiColorSpecialCharacters.ForeColor = this.mLogger.LogOptions.SpecialCharactersColor;
+        }
+
+        private void SetDefaultValues()
+        {
             this.tscbPortName.Items.Clear();
             this.tscbPortName.Items.AddRange(Worker.PortsList);
 
@@ -39,10 +87,31 @@ namespace com232term
             foreach (System.IO.Ports.StopBits a in Worker.StopBitsList)
                 this.tscbStopBits.Items.Add(a);
 
-            this.tscbPortName.SelectedItem = Options.Instance.PortOptions.PortName;
-            this.tscbBaudrates.SelectedItem = Options.Instance.PortOptions.Baudrate;
-            this.tscbParity.SelectedItem = Options.Instance.PortOptions.Parity;
-            this.tscbStopBits.SelectedItem = Options.Instance.PortOptions.StopBits;
+            this.tsddbFormat.DropDownItems.Clear();
+            foreach (LogSettings.DisplayFormat a in Logger.DisplayFormats)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem() { Tag = a, Text = a.ToString(), CheckOnClick = true };
+                item.Click += new EventHandler(DisplayFormat_Click);
+                this.tsddbFormat.DropDownItems.Add(item);
+            }
+        }
+
+        private void DisplayFormat_Click(object sender, EventArgs e)
+        {
+            LogSettings.DisplayFormat format = LogSettings.DisplayFormat.Hex;
+            foreach (ToolStripItem item in this.tsddbFormat.DropDownItems)
+            {
+                ToolStripMenuItem menuItem = item as ToolStripMenuItem;
+                LogSettings.DisplayFormat formatItem = (LogSettings.DisplayFormat)menuItem.Tag;
+                if (menuItem.Checked)
+                    format |= formatItem;
+                else
+                    format &= ~formatItem;
+            }
+            this.mLogger.LogOptions.Format = format;
+            this.tsddbFormat.Text = "Format: " + format.ToString();
+            Options.Instance.LogOptions.Format = format;
+            Options.Save();
         }
 
         private void mWorker_OnSettingsChanged(object sender, EventArgs e)
@@ -91,8 +160,7 @@ namespace com232term
 
         private void mWorker_OnDataReceived(object sender, DataReceivedEventArgs e)
         {
-            this.rtbLog.AppendText(ArraysConverter.FromArray(e.Value));
-            this.rtbLog.AppendText("\n");
+            this.mLogger.Log(e.Value);
         }
 
         private void OnPortSettingsChanged(object sender, EventArgs e)
@@ -136,6 +204,52 @@ namespace com232term
             else
             {
                 this.mWorker.Open();
+            }
+        }
+
+        private void OnColorsClick(object sender, EventArgs e)
+        {
+            if (sender == this.tsmiColorReceived)
+            {
+                using (ColorDialog dialog = new ColorDialog())
+                {
+                    dialog.Color = this.mLogger.LogOptions.ReceivedColor;
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        this.mLogger.LogOptions.ReceivedColor = dialog.Color;
+                        Options.Instance.LogOptions.ReceivedColor = dialog.Color;
+                        this.tsmiColorReceived.ForeColor = dialog.Color;
+                        Options.Save();
+                    }
+                }
+            }
+            if (sender == this.tsmiColorTransmitted)
+            {
+                using (ColorDialog dialog = new ColorDialog())
+                {
+                    dialog.Color = this.mLogger.LogOptions.TransmittedColor;
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        this.mLogger.LogOptions.TransmittedColor = dialog.Color;
+                        Options.Instance.LogOptions.TransmittedColor = dialog.Color;
+                        this.tsmiColorTransmitted.ForeColor = dialog.Color;
+                        Options.Save();
+                    }
+                }
+            }
+            if (sender == this.tsmiColorSpecialCharacters)
+            {
+                using (ColorDialog dialog = new ColorDialog())
+                {
+                    dialog.Color = this.mLogger.LogOptions.SpecialCharactersColor;
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        this.mLogger.LogOptions.SpecialCharactersColor = dialog.Color;
+                        Options.Instance.LogOptions.SpecialCharactersColor = dialog.Color;
+                        this.tsmiColorSpecialCharacters.ForeColor = dialog.Color;
+                        Options.Save();
+                    }
+                }
             }
         }
     }

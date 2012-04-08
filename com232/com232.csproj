@@ -46,9 +46,11 @@
   <ItemGroup>
     <Compile Include="Classes\ArraysConverter.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />
+    <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\Options\LogSettings.cs" />
     <Compile Include="Classes\Options\Options.cs" />
     <Compile Include="Classes\Options\PortSettings.cs" />
+    <Compile Include="Classes\Options\ColorSerialized.cs" />
     <Compile Include="Classes\RichTextBoxExt.cs" />
     <Compile Include="Classes\SerialPortFixed.cs">
       <SubType>Component</SubType>
