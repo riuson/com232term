@@ -227,25 +227,26 @@ namespace com232term
                 dialog.Color = value;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    value = dialog.Color;
                     if (sender == this.tsmiColorReceived)
                     {
                         this.mLogger.LogOptions.ReceivedColor = value;
-                        Options.Instance.LogOptions.ReceivedColor = dialog.Color;
+                        Options.Instance.LogOptions.ReceivedColor = value;
                     }
                     if (sender == this.tsmiColorTransmitted)
                     {
                         this.mLogger.LogOptions.TransmittedColor = value;
-                        Options.Instance.LogOptions.TransmittedColor = dialog.Color;
+                        Options.Instance.LogOptions.TransmittedColor = value;
                     }
                     if (sender == this.tsmiColorSystem)
                     {
                         this.mLogger.LogOptions.SystemColor = value;
-                        Options.Instance.LogOptions.SystemColor = dialog.Color;
+                        Options.Instance.LogOptions.SystemColor = value;
                     }
                     if (sender == this.tsmiColorTime)
                     {
                         this.mLogger.LogOptions.TimeColor = value;
-                        Options.Instance.LogOptions.TimeColor = dialog.Color;
+                        Options.Instance.LogOptions.TimeColor = value;
                     }
 
                     (sender as ToolStripMenuItem).ForeColor = value;
