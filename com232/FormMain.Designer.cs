@@ -43,6 +43,8 @@
             this.tsddbColors = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiColorTransmitted = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorReceived = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiColorSystem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiColorTime = new System.Windows.Forms.ToolStripMenuItem();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -164,7 +166,9 @@
             this.tsddbColors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsddbColors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiColorTransmitted,
-            this.tsmiColorReceived});
+            this.tsmiColorReceived,
+            this.tsmiColorSystem,
+            this.tsmiColorTime});
             this.tsddbColors.Image = ((System.Drawing.Image)(resources.GetObject("tsddbColors.Image")));
             this.tsddbColors.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbColors.Name = "tsddbColors";
@@ -174,16 +178,30 @@
             // tsmiColorTransmitted
             // 
             this.tsmiColorTransmitted.Name = "tsmiColorTransmitted";
-            this.tsmiColorTransmitted.Size = new System.Drawing.Size(170, 22);
+            this.tsmiColorTransmitted.Size = new System.Drawing.Size(152, 22);
             this.tsmiColorTransmitted.Text = "Transmitted";
             this.tsmiColorTransmitted.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // tsmiColorReceived
             // 
             this.tsmiColorReceived.Name = "tsmiColorReceived";
-            this.tsmiColorReceived.Size = new System.Drawing.Size(170, 22);
+            this.tsmiColorReceived.Size = new System.Drawing.Size(152, 22);
             this.tsmiColorReceived.Text = "Received";
             this.tsmiColorReceived.Click += new System.EventHandler(this.OnColorsClick);
+            // 
+            // tsmiColorSystem
+            // 
+            this.tsmiColorSystem.Name = "tsmiColorSystem";
+            this.tsmiColorSystem.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorSystem.Text = "System";
+            this.tsmiColorSystem.Click += new System.EventHandler(this.OnColorsClick);
+            // 
+            // tsmiColorTime
+            // 
+            this.tsmiColorTime.Name = "tsmiColorTime";
+            this.tsmiColorTime.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorTime.Text = "Time";
+            this.tsmiColorTime.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // FormMain
             // 
@@ -220,6 +238,8 @@
         private System.Windows.Forms.ToolStripDropDownButton tsddbColors;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTransmitted;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorReceived;
+        private System.Windows.Forms.ToolStripMenuItem tsmiColorSystem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
     }
 }
 

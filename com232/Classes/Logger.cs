@@ -64,11 +64,11 @@ namespace com232term.Classes
             this.mBox.AppendText(String.Format("\n"));
             
             if (direction == Direction.Received)
-                this.mBox.AppendText(String.Format(">>> "));
+                this.mBox.AppendText(">>> ", this.LogOptions.TimeColor);
             else
-                this.mBox.AppendText(String.Format("<<< "));
+                this.mBox.AppendText("<<< ", this.LogOptions.TimeColor);
 
-            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), foreColor);
+            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.LogOptions.TimeColor);
             this.mBox.AppendText(String.Format("\n"));
             
             LogSettings.DisplayFormat format = Options.Options.Instance.LogOptions.Format;

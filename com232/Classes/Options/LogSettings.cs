@@ -20,10 +20,14 @@ namespace com232term.Classes.Options
         {
             this.TransmittedColor = Color.Green;
             this.ReceivedColor = Color.Blue;
+            this.SystemColor = Color.Silver;
+            this.TimeColor = Color.Navy;
             this.Format = DisplayFormat.Hex;
         }
         public ColorSerialized TransmittedColor { get; set; }
         public ColorSerialized ReceivedColor { get; set; }
+        public ColorSerialized SystemColor { get; set; }
+        public ColorSerialized TimeColor { get; set; }
         public DisplayFormat Format { get; set; }
     }
 }

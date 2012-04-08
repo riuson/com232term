@@ -67,6 +67,8 @@ namespace com232term
             this.mLogger.LogOptions = Options.Instance.LogOptions;
             this.tsmiColorReceived.ForeColor = this.mLogger.LogOptions.ReceivedColor;
             this.tsmiColorTransmitted.ForeColor = this.mLogger.LogOptions.TransmittedColor;
+            this.tsmiColorSystem.ForeColor = this.mLogger.LogOptions.SystemColor;
+            this.tsmiColorTime.ForeColor = this.mLogger.LogOptions.TimeColor;
         }
 
         private void SetDefaultValues()
@@ -208,32 +210,46 @@ namespace com232term
 
         private void OnColorsClick(object sender, EventArgs e)
         {
+            Color value = Color.Black;
+
             if (sender == this.tsmiColorReceived)
-            {
-                using (ColorDialog dialog = new ColorDialog())
-                {
-                    dialog.Color = this.mLogger.LogOptions.ReceivedColor;
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        this.mLogger.LogOptions.ReceivedColor = dialog.Color;
-                        Options.Instance.LogOptions.ReceivedColor = dialog.Color;
-                        this.tsmiColorReceived.ForeColor = dialog.Color;
-                        Options.Save();
-                    }
-                }
-            }
+                value = this.mLogger.LogOptions.ReceivedColor;
             if (sender == this.tsmiColorTransmitted)
+                value = this.mLogger.LogOptions.TransmittedColor;
+            if (sender == this.tsmiColorSystem)
+                value = this.mLogger.LogOptions.SystemColor;
+            if (sender == this.tsmiColorTime)
+                value = this.mLogger.LogOptions.TimeColor;
+
+
+            using (ColorDialog dialog = new ColorDialog())
             {
-                using (ColorDialog dialog = new ColorDialog())
+                dialog.Color = value;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    dialog.Color = this.mLogger.LogOptions.TransmittedColor;
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (sender == this.tsmiColorReceived)
                     {
-                        this.mLogger.LogOptions.TransmittedColor = dialog.Color;
-                        Options.Instance.LogOptions.TransmittedColor = dialog.Color;
-                        this.tsmiColorTransmitted.ForeColor = dialog.Color;
-                        Options.Save();
+                        this.mLogger.LogOptions.ReceivedColor = value;
+                        Options.Instance.LogOptions.ReceivedColor = dialog.Color;
                     }
+                    if (sender == this.tsmiColorTransmitted)
+                    {
+                        this.mLogger.LogOptions.TransmittedColor = value;
+                        Options.Instance.LogOptions.TransmittedColor = dialog.Color;
+                    }
+                    if (sender == this.tsmiColorSystem)
+                    {
+                        this.mLogger.LogOptions.SystemColor = value;
+                        Options.Instance.LogOptions.SystemColor = dialog.Color;
+                    }
+                    if (sender == this.tsmiColorTime)
+                    {
+                        this.mLogger.LogOptions.TimeColor = value;
+                        Options.Instance.LogOptions.TimeColor = dialog.Color;
+                    }
+
+                    (sender as ToolStripMenuItem).ForeColor = value;
+                    Options.Save();
                 }
             }
         }
