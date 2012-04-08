@@ -128,19 +128,20 @@ namespace com232term.Classes
                 {
                     this.mDataReceived = false;
 
-                    byte[] readedBytes = new byte[0];
+                    byte[] readedBytes = null;
                     lock (this.mPort)
                     {
                         if (this.mPort.IsOpen)
                         {
                             if (this.mPort.BytesToRead > 0)
                             {
+                                Thread.Sleep(100);
                                 readedBytes = new byte[this.mPort.BytesToRead];
                                 this.mPort.Read(readedBytes, 0, readedBytes.Length);
                             }
                         }
                     }
-                    if (readedBytes.Length > 0)
+                    if (readedBytes != null && readedBytes.Length > 0)
                     {
                         task = new ThreadTask();
                         task.Completed = delegate()
