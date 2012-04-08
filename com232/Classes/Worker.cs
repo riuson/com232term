@@ -62,8 +62,8 @@ namespace com232term.Classes
         private Thread mThread;
         private bool mNeedStop;
         private AutoResetEvent mStopEvent;
-        private Queue<ThreadTask> mIncomingTasksQueue;
-        private Queue<ThreadTask> mCompletedTasksQueue;
+        private Queue<ThreadedMethod> mIncomingTasksQueue;
+        private Queue<ThreadedMethod> mOutgoingTasksQueue;
         private SerialPortFixed mPort;
         private bool mDataReceived;
         private System.Windows.Forms.Timer mTimerSync;
@@ -80,8 +80,8 @@ namespace com232term.Classes
         {
             this.PortOptions = new PortSettings();
             this.mStopEvent = new AutoResetEvent(false);
-            this.mIncomingTasksQueue = new Queue<ThreadTask>();
-            this.mCompletedTasksQueue = new Queue<ThreadTask>();
+            this.mIncomingTasksQueue = new Queue<ThreadedMethod>();
+            this.mOutgoingTasksQueue = new Queue<ThreadedMethod>();
             this.mNeedStop = false;
             this.mPort = new SerialPortFixed(this.PortOptions.PortName, this.PortOptions.Baudrate, this.PortOptions.Parity, 8, this.PortOptions.StopBits);
             this.mThread = new Thread(new ThreadStart(this.Work));
@@ -124,8 +124,6 @@ namespace com232term.Classes
                 if (!this.CheckPortSettings())
                     continue;
 
-                ThreadTask task = null;
-
                 if (this.mDataReceived)
                 {
                     this.mDataReceived = false;
@@ -145,21 +143,16 @@ namespace com232term.Classes
                     }
                     if (readedBytes != null && readedBytes.Length > 0)
                     {
-                        task = new ThreadTask();
-                        task.Method = delegate()
+                        this.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnDataLog != null)
                                 this.OnDataLog(this, new DataLogEventArgs(Direction.Received, readedBytes));
-                        };
-                        lock (this.mCompletedTasksQueue)
-                        {
-                            this.mCompletedTasksQueue.Enqueue(task);
-                        }
-                        task = null;
+                        });
                     }
                 }
 
-                // get new message to send
+                // execute new incoming tasks
+                ThreadedMethod task = null;
                 lock (this.mIncomingTasksQueue)
                 {
                     if (this.mIncomingTasksQueue.Count > 0)
@@ -167,7 +160,7 @@ namespace com232term.Classes
                 }
                 if (task != null)
                 {
-                    if (task.Method != null) task.Method();
+                    task();
                 }
             }
             this.mStopEvent.Set();
@@ -197,19 +190,14 @@ namespace com232term.Classes
                     if (opened)
                         this.mPort.Open();
 
-                    lock (this.mIncomingTasksQueue)
+                    this.EnqueueOutgoingTask(delegate()
                     {
-                        ThreadTask task = new ThreadTask();
-                        task.Method = delegate()
-                        {
-                            this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}",
-                                this.PortOptions.PortName,
-                                this.PortOptions.Baudrate,
-                                this.PortOptions.Parity,
-                                this.PortOptions.StopBits));
-                        };
-                        this.mCompletedTasksQueue.Enqueue(task);
-                    }
+                        this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}",
+                            this.PortOptions.PortName,
+                            this.PortOptions.Baudrate,
+                            this.PortOptions.Parity,
+                            this.PortOptions.StopBits));
+                    });
                 }
 
                 if (this.mPortOpenedLastState != this.mPort.IsOpen)
@@ -218,38 +206,28 @@ namespace com232term.Classes
 
                     if (this.mPortOpenedLastState)
                     {
-                        lock (this.mIncomingTasksQueue)
+                        this.EnqueueOutgoingTask(delegate()
                         {
-                            ThreadTask task = new ThreadTask();
-                            task.Method = delegate()
-                            {
-                                if (this.OnOpened != null)
-                                    this.OnOpened(this, EventArgs.Empty);
+                            if (this.OnOpened != null)
+                                this.OnOpened(this, EventArgs.Empty);
 
-                                this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}",
-                                    this.PortOptions.PortName,
-                                    this.PortOptions.Baudrate,
-                                    this.PortOptions.Parity,
-                                    this.PortOptions.StopBits));
-                            };
-                            this.mCompletedTasksQueue.Enqueue(task);
-                        }
+                            this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}",
+                                this.PortOptions.PortName,
+                                this.PortOptions.Baudrate,
+                                this.PortOptions.Parity,
+                                this.PortOptions.StopBits));
+                        });
                     }
                     else
                     {
-                        lock (this.mIncomingTasksQueue)
+                        this.EnqueueOutgoingTask(delegate()
                         {
-                            ThreadTask task = new ThreadTask();
-                            task.Method = delegate()
-                            {
-                                if (this.OnClosed != null)
-                                    this.OnClosed(this, EventArgs.Empty);
+                            if (this.OnClosed != null)
+                                this.OnClosed(this, EventArgs.Empty);
 
-                                this.LogMessage(String.Format("Port closed: {0}",
-                                    this.PortOptions.PortName));
-                            };
-                            this.mCompletedTasksQueue.Enqueue(task);
-                        }
+                            this.LogMessage(String.Format("Port closed: {0}",
+                                this.PortOptions.PortName));
+                        });
                     }
                 }
 
@@ -269,8 +247,7 @@ namespace com232term.Classes
 
         public void Open()
         {
-            ThreadTask task = new ThreadTask();
-            task.Method = delegate()
+            this.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
@@ -279,48 +256,46 @@ namespace com232term.Classes
                     {
                         this.mPort.DataReceived += new SerialDataReceivedEventHandler(mPort_DataReceived);
                     }
-                }
-            };
+                    else
+                    {
+                        this.EnqueueOutgoingTask(delegate()
+                        {
+                            if (this.OnOpened != null)
+                                this.OnOpened(this, EventArgs.Empty);
 
-            lock (this.mIncomingTasksQueue)
-            {
-                this.mIncomingTasksQueue.Enqueue(task);
-            }
+                            this.LogMessage(String.Format("Unable to open port: {0}, {1}, {2}, {3}",
+                                this.PortOptions.PortName,
+                                this.PortOptions.Baudrate,
+                                this.PortOptions.Parity,
+                                this.PortOptions.StopBits));
+                        });
+
+                    }
+                }
+            });
         }
 
         public void Close()
         {
-            ThreadTask task = new ThreadTask();
-            task.Method = delegate()
+            this.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
                     this.mPort.DataReceived -= new SerialDataReceivedEventHandler(mPort_DataReceived);
                     this.mPort.Close();
                 }
-            };
-
-            lock (this.mIncomingTasksQueue)
-            {
-                this.mIncomingTasksQueue.Enqueue(task);
-            }
+            });
         }
 
         public void Send(byte []value)
         {
-            ThreadTask task = new ThreadTask();
-            task.Method = delegate()
+            this.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
                     this.mPort.Write(value, 0, value.Length);
                 }
-            };
-
-            lock (this.mIncomingTasksQueue)
-            {
-                this.mIncomingTasksQueue.Enqueue(task);
-            }
+            });
         }
 
         public bool IsOpen
@@ -338,16 +313,16 @@ namespace com232term.Classes
 
         private void mTimerSync_Tick(object sender, EventArgs e)
         {
-            ThreadTask[] tasks = new ThreadTask[0];
-            lock (this.mCompletedTasksQueue)
+            ThreadedMethod[] tasks = new ThreadedMethod[0];
+            lock (this.mOutgoingTasksQueue)
             {
-                tasks = this.mCompletedTasksQueue.ToArray();
-                this.mCompletedTasksQueue.Clear();
+                tasks = this.mOutgoingTasksQueue.ToArray();
+                this.mOutgoingTasksQueue.Clear();
             }
-            foreach (ThreadTask task in tasks)
+            foreach (ThreadedMethod task in tasks)
             {
                 if (task.Method != null)
-                    task.Method();
+                    task();
             }
         }
 
@@ -356,22 +331,25 @@ namespace com232term.Classes
             if (this.OnMessageLog != null)
                 this.OnMessageLog(this, new MessageLogEventArgs(message));
         }
+
+        private void EnqueueIncomingTask(ThreadedMethod task)
+        {
+            lock (this.mIncomingTasksQueue)
+            {
+                this.mIncomingTasksQueue.Enqueue(task);
+            }
+        }
+
+        private void EnqueueOutgoingTask(ThreadedMethod task)
+        {
+            lock (this.mOutgoingTasksQueue)
+            {
+                this.mOutgoingTasksQueue.Enqueue(task);
+            }
+        }
     }
 
     public delegate void ThreadedMethod();
-
-    public class ThreadTask
-    {
-        public ThreadTask()
-        {
-            this.Method = null;
-        }
-        public ThreadTask(ThreadedMethod work)
-        {
-            this.Method = work;
-        }
-        public ThreadedMethod Method { get; set; }
-    }
 
     public class DataLogEventArgs : EventArgs
     {
