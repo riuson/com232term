@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using com232term.Classes;
 using com232term.Classes.Options;
+using com232term.Controls.DataSender;
 
 namespace com232term
 {

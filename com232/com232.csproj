@@ -55,6 +55,15 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\Worker.cs" />
+    <Compile Include="Controls\DataSender\DataSender.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataSender\DataSender.Designer.cs">
+      <DependentUpon>DataSender.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataSender\ToolStripDataSender.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +72,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\DataSender\DataSender.resx">
+      <DependentUpon>DataSender.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
