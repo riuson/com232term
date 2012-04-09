@@ -37,15 +37,26 @@ namespace com232term.Controls.DataSender
                 if (this.mSender != null)
                 {
                     this.mSender.Packets.ListChanged += new ListChangedEventHandler(Packets_ListChanged);
+
+                    this.SuspendLayout();
+
                     this.BuildButtons();
+
+                    this.PerformLayout();
+                    this.ResumeLayout();
                 }
             }
         }
 
         private void Packets_ListChanged(object sender, ListChangedEventArgs e)
         {
+            this.SuspendLayout();
+
             this.ClearButtons();
             this.BuildButtons();
+
+            this.PerformLayout();
+            this.ResumeLayout();
         }
 
         private void ClearButtons()
