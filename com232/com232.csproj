@@ -57,19 +57,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\Worker.cs" />
-    <Compile Include="Controls\DataSender\DataSenderGuiTable.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\DataSender\DataSenderGuiTable.Designer.cs">
-      <DependentUpon>DataSenderGuiTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\DataSender\ToolStripComboBoxStretched.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DataSender\ToolStripDataSenderGuiConsole.cs">
+    <Compile Include="Controls\DataSender\ToolStripDataSenderGuiButtonsLast.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DataSender\ToolStripDataSenderGuiTable.cs">
+    <Compile Include="Controls\DataSender\ToolStripDataSenderGuiConsole.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="FormMain.cs">
@@ -80,9 +74,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Controls\DataSender\DataSenderGuiTable.resx">
-      <DependentUpon>DataSenderGuiTable.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

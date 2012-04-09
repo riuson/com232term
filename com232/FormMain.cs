@@ -32,7 +32,7 @@ namespace com232term
 
             this.mSender = new DataSender();
             this.toolStripConsole.Sender = this.mSender;
-            this.toolStripDataSender.Sender = this.mSender;
+            this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
 
             this.SetDefaultValues();
 

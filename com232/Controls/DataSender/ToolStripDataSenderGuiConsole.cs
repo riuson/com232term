@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using com232term.Classes;
+using System.ComponentModel;
 
 namespace com232term.Controls.DataSender
 {
@@ -73,7 +74,8 @@ namespace com232term.Controls.DataSender
                     this.mComboBoxConsole.ComboBox.SelectedIndex = 0;
             }
         }
-
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataSender Sender
         {
             get
