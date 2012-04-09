@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DataSender.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />
+    <Compile Include="Classes\IDataSender.cs" />
     <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\Options\LogSettings.cs" />
     <Compile Include="Classes\Options\Options.cs" />
@@ -64,7 +66,7 @@
     <Compile Include="Controls\DataSender\ToolStripComboBoxStretched.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DataSender\ToolStripGuiConsole.cs">
+    <Compile Include="Controls\DataSender\ToolStripDataSenderGuiConsole.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DataSender\ToolStripDataSenderGuiTable.cs">

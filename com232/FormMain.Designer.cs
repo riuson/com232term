@@ -32,6 +32,7 @@
             System.Windows.Forms.ToolStripContainer toolStripContainer1;
             System.Windows.Forms.ToolStrip toolStripSender;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            this.toolStripConsole = new com232term.Controls.DataSender.ToolStripDataSenderGuiConsole();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.toolStripDataSender = new com232term.Controls.DataSender.ToolStripDataSenderGuiTable();
             this.tsConnectionMenu = new System.Windows.Forms.ToolStrip();
@@ -47,7 +48,6 @@
             this.tsmiColorReceived = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorTime = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripConsole1 = new com232term.Controls.DataSender.ToolStripGuiConsole();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripSender = new System.Windows.Forms.ToolStrip();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -65,7 +65,7 @@
             // 
             // toolStripContainer1.BottomToolStripPanel
             // 
-            toolStripContainer1.BottomToolStripPanel.Controls.Add(this.toolStripConsole1);
+            toolStripContainer1.BottomToolStripPanel.Controls.Add(this.toolStripConsole);
             // 
             // toolStripContainer1.ContentPanel
             // 
@@ -86,6 +86,15 @@
             // 
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsConnectionMenu);
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsLogMenu);
+            // 
+            // toolStripConsole
+            // 
+            this.toolStripConsole.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripConsole.Location = new System.Drawing.Point(0, 0);
+            this.toolStripConsole.Name = "toolStripConsole";
+            this.toolStripConsole.Size = new System.Drawing.Size(859, 25);
+            this.toolStripConsole.Stretch = true;
+            this.toolStripConsole.TabIndex = 0;
             // 
             // rtbLog
             // 
@@ -236,14 +245,6 @@
             this.tsmiColorTime.Text = "Time";
             this.tsmiColorTime.Click += new System.EventHandler(this.OnColorsClick);
             // 
-            // toolStripConsole1
-            // 
-            this.toolStripConsole1.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripConsole1.Location = new System.Drawing.Point(3, 0);
-            this.toolStripConsole1.Name = "toolStripConsole1";
-            this.toolStripConsole1.Size = new System.Drawing.Size(192, 25);
-            this.toolStripConsole1.TabIndex = 0;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -288,7 +289,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiColorSystem;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
         private Controls.DataSender.ToolStripDataSenderGuiTable toolStripDataSender;
-        private Controls.DataSender.ToolStripGuiConsole toolStripConsole1;
+        private Controls.DataSender.ToolStripDataSenderGuiConsole toolStripConsole;
     }
 }
 

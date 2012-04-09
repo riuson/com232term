@@ -15,6 +15,7 @@ namespace com232term
     {
         private Worker mWorker;
         private Logger mLogger;
+        private DataSender mSender;
 
         public FormMain()
         {
@@ -28,6 +29,10 @@ namespace com232term
             this.mWorker.OnMessageLog += new EventHandler<MessageLogEventArgs>(mWorker_OnMessageLog);
 
             this.mLogger = new Logger(this.rtbLog);
+
+            this.mSender = new DataSender();
+            this.toolStripConsole.Sender = this.mSender;
+            this.toolStripDataSender.Sender = this.mSender;
 
             this.SetDefaultValues();
 

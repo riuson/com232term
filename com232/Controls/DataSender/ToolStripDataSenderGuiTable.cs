@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using com232term.Classes;
+using System.Drawing;
 
 namespace com232term.Controls.DataSender
 {
@@ -13,5 +15,7 @@ namespace com232term.Controls.DataSender
             base(new DataSenderGuiTable())
         {
         }
+
+        public IDataSender Sender { get; set; }
     }
 }
