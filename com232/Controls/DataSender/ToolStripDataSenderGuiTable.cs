@@ -7,10 +7,10 @@ using System.Windows.Forms.Design;
 namespace com232term.Controls.DataSender
 {
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.ToolStrip)]
-    public class ToolStripDataSender : ToolStripControlHost
+    public class ToolStripDataSenderGuiTable : ToolStripControlHost
     {
-        public ToolStripDataSender() :
-            base(new DataSender())
+        public ToolStripDataSenderGuiTable() :
+            base(new DataSenderGuiTable())
         {
         }
     }

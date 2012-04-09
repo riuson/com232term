@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace com232term.Controls.DataSender
 {
-    public partial class DataSender : UserControl
+    public partial class DataSenderGuiTable : UserControl
     {
-        public DataSender()
+        public DataSenderGuiTable()
         {
             InitializeComponent();
         }

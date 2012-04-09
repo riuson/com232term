@@ -1,6 +1,6 @@
 ﻿namespace com232term.Controls.DataSender
 {
-    partial class DataSender
+    partial class DataSenderGuiTable
     {
         /// <summary> 
         /// Требуется переменная конструктора.

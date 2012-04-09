@@ -33,7 +33,7 @@
             System.Windows.Forms.ToolStrip toolStripSender;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.rtbLog = new System.Windows.Forms.RichTextBox();
-            this.toolStripDataSender = new com232term.Controls.DataSender.ToolStripDataSender();
+            this.toolStripDataSender = new com232term.Controls.DataSender.ToolStripDataSenderGuiTable();
             this.tsConnectionMenu = new System.Windows.Forms.ToolStrip();
             this.tssbConnect = new System.Windows.Forms.ToolStripSplitButton();
             this.tscbPortName = new System.Windows.Forms.ToolStripComboBox();
@@ -47,8 +47,10 @@
             this.tsmiColorReceived = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorTime = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripConsole1 = new com232term.Controls.DataSender.ToolStripGuiConsole();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripSender = new System.Windows.Forms.ToolStrip();
+            toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.RightToolStripPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -61,10 +63,14 @@
             // toolStripContainer1
             // 
             // 
+            // toolStripContainer1.BottomToolStripPanel
+            // 
+            toolStripContainer1.BottomToolStripPanel.Controls.Add(this.toolStripConsole1);
+            // 
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(this.rtbLog);
-            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(777, 404);
+            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(777, 379);
             toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
@@ -87,7 +93,7 @@
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(777, 404);
+            this.rtbLog.Size = new System.Drawing.Size(777, 379);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -96,9 +102,9 @@
             toolStripSender.Dock = System.Windows.Forms.DockStyle.None;
             toolStripSender.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDataSender});
-            toolStripSender.Location = new System.Drawing.Point(0, 14);
+            toolStripSender.Location = new System.Drawing.Point(0, 0);
             toolStripSender.Name = "toolStripSender";
-            toolStripSender.Size = new System.Drawing.Size(82, 62);
+            toolStripSender.Size = new System.Drawing.Size(82, 379);
             toolStripSender.Stretch = true;
             toolStripSender.TabIndex = 1;
             toolStripSender.Text = "Data sending";
@@ -230,6 +236,14 @@
             this.tsmiColorTime.Text = "Time";
             this.tsmiColorTime.Click += new System.EventHandler(this.OnColorsClick);
             // 
+            // toolStripConsole1
+            // 
+            this.toolStripConsole1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripConsole1.Location = new System.Drawing.Point(3, 0);
+            this.toolStripConsole1.Name = "toolStripConsole1";
+            this.toolStripConsole1.Size = new System.Drawing.Size(192, 25);
+            this.toolStripConsole1.TabIndex = 0;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,6 +252,8 @@
             this.Controls.Add(toolStripContainer1);
             this.Name = "FormMain";
             this.Text = "Com232Term";
+            toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+            toolStripContainer1.BottomToolStripPanel.PerformLayout();
             toolStripContainer1.ContentPanel.ResumeLayout(false);
             toolStripContainer1.RightToolStripPanel.ResumeLayout(false);
             toolStripContainer1.RightToolStripPanel.PerformLayout();
@@ -271,7 +287,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiColorReceived;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorSystem;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
-        private Controls.DataSender.ToolStripDataSender toolStripDataSender;
+        private Controls.DataSender.ToolStripDataSenderGuiTable toolStripDataSender;
+        private Controls.DataSender.ToolStripGuiConsole toolStripConsole1;
     }
 }
 
