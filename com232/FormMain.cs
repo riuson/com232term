@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using com232term.Classes;
 using com232term.Classes.Options;
 using com232term.Controls.DataSender;
+using com232term.Forms;
 
 namespace com232term
 {
@@ -31,8 +32,10 @@ namespace com232term
             this.mLogger = new Logger(this.rtbLog);
 
             this.mSender = new DataSender();
+            this.mSender.OnStaticEditorCall += new EventHandler<CallPacketsEditorEventArgs>(mSender_OnStaticEditorCall);
             this.toolStripConsole.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
+            this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
 
             this.SetDefaultValues();
 
@@ -264,6 +267,14 @@ namespace com232term
                     (sender as ToolStripMenuItem).ForeColor = value;
                     Options.Save();
                 }
+            }
+        }
+
+        private void mSender_OnStaticEditorCall(object sender, CallPacketsEditorEventArgs e)
+        {
+            using (PacketsEditor dialog = new PacketsEditor(e.List))
+            {
+                dialog.ShowDialog();
             }
         }
     }

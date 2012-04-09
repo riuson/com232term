@@ -34,6 +34,7 @@
             this.toolStripConsole = new com232term.Controls.DataSender.ToolStripDataSenderGuiConsole();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.toolStripDataSenderGuiButtonsLast = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsLast();
+            this.toolStripDataSenderGuiButtonsStatic = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsStatic();
             this.tsConnectionMenu = new System.Windows.Forms.ToolStrip();
             this.tssbConnect = new System.Windows.Forms.ToolStripSplitButton();
             this.tscbPortName = new System.Windows.Forms.ToolStripComboBox();
@@ -67,7 +68,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(this.rtbLog);
-            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(827, 379);
+            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(801, 379);
             toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
@@ -75,6 +76,7 @@
             // toolStripContainer1.RightToolStripPanel
             // 
             toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripDataSenderGuiButtonsLast);
+            toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripDataSenderGuiButtonsStatic);
             toolStripContainer1.Size = new System.Drawing.Size(859, 429);
             toolStripContainer1.TabIndex = 0;
             toolStripContainer1.Text = "toolStripContainer1";
@@ -100,7 +102,7 @@
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(827, 379);
+            this.rtbLog.Size = new System.Drawing.Size(801, 379);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -109,10 +111,20 @@
             this.toolStripDataSenderGuiButtonsLast.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStripDataSenderGuiButtonsLast.Location = new System.Drawing.Point(0, 0);
             this.toolStripDataSenderGuiButtonsLast.Name = "toolStripDataSenderGuiButtonsLast";
-            this.toolStripDataSenderGuiButtonsLast.Size = new System.Drawing.Size(32, 379);
+            this.toolStripDataSenderGuiButtonsLast.Size = new System.Drawing.Size(26, 379);
             this.toolStripDataSenderGuiButtonsLast.Stretch = true;
             this.toolStripDataSenderGuiButtonsLast.TabIndex = 1;
             this.toolStripDataSenderGuiButtonsLast.Text = "Last sended packets";
+            // 
+            // toolStripDataSenderGuiButtonsStatic
+            // 
+            this.toolStripDataSenderGuiButtonsStatic.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripDataSenderGuiButtonsStatic.Location = new System.Drawing.Point(26, 0);
+            this.toolStripDataSenderGuiButtonsStatic.Name = "toolStripDataSenderGuiButtonsStatic";
+            this.toolStripDataSenderGuiButtonsStatic.Size = new System.Drawing.Size(32, 379);
+            this.toolStripDataSenderGuiButtonsStatic.Stretch = true;
+            this.toolStripDataSenderGuiButtonsStatic.TabIndex = 2;
+            this.toolStripDataSenderGuiButtonsStatic.Text = "Static packets";
             // 
             // tsConnectionMenu
             // 
@@ -278,6 +290,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
         private Controls.DataSender.ToolStripDataSenderGuiConsole toolStripConsole;
         private Controls.DataSender.ToolStripDataSenderGuiButtonsLast toolStripDataSenderGuiButtonsLast;
+        private Controls.DataSender.ToolStripDataSenderGuiButtonsStatic toolStripDataSenderGuiButtonsStatic;
     }
 }
 
