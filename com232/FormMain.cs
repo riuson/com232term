@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using com232term.Classes;
 using com232term.Classes.Options;
+using com232term.Controls.DataSender;
+using com232term.Forms;
 
 namespace com232term
 {
@@ -14,6 +16,7 @@ namespace com232term
     {
         private Worker mWorker;
         private Logger mLogger;
+        private DataSender mSender;
 
         public FormMain()
         {
@@ -27,6 +30,13 @@ namespace com232term
             this.mWorker.OnMessageLog += new EventHandler<MessageLogEventArgs>(mWorker_OnMessageLog);
 
             this.mLogger = new Logger(this.rtbLog);
+
+            this.mSender = new DataSender();
+            this.mSender.OnStaticEditorCall += new EventHandler<CallPacketsEditorEventArgs>(mSender_OnStaticEditorCall);
+            this.mSender.OnSendData += new EventHandler<SendDataEventArgs>(mSender_OnSendData);
+            this.toolStripConsole.Sender = this.mSender;
+            this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
+            this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
 
             this.SetDefaultValues();
 
@@ -70,23 +80,25 @@ namespace com232term
             this.tsmiColorTransmitted.ForeColor = this.mLogger.LogOptions.TransmittedColor;
             this.tsmiColorSystem.ForeColor = this.mLogger.LogOptions.SystemColor;
             this.tsmiColorTime.ForeColor = this.mLogger.LogOptions.TimeColor;
+
+            this.mSender.Settings = Options.Instance.SendOptions;
         }
 
         private void SetDefaultValues()
         {
             this.tscbPortName.Items.Clear();
-            this.tscbPortName.Items.AddRange(Worker.PortsList);
+            this.tscbPortName.Items.AddRange(PortSettings.PortsList);
 
             this.tscbBaudrates.Items.Clear();
-            foreach (int a in Worker.BaudratesList)
+            foreach (int a in PortSettings.BaudratesList)
                 this.tscbBaudrates.Items.Add(a);
 
             this.tscbParity.Items.Clear();
-            foreach (System.IO.Ports.Parity a in Worker.ParitiesList)
+            foreach (System.IO.Ports.Parity a in PortSettings.ParitiesList)
                 this.tscbParity.Items.Add(a);
 
             this.tscbStopBits.Items.Clear();
-            foreach (System.IO.Ports.StopBits a in Worker.StopBitsList)
+            foreach (System.IO.Ports.StopBits a in PortSettings.StopBitsList)
                 this.tscbStopBits.Items.Add(a);
 
             this.tsddbFormat.DropDownItems.Clear();
@@ -259,6 +271,19 @@ namespace com232term
                     Options.Save();
                 }
             }
+        }
+
+        private void mSender_OnStaticEditorCall(object sender, CallPacketsEditorEventArgs e)
+        {
+            using (PacketsEditor dialog = new PacketsEditor(e.List))
+            {
+                dialog.ShowDialog();
+            }
+        }
+
+        private void mSender_OnSendData(object sender, SendDataEventArgs e)
+        {
+            this.mWorker.Send(e.Data);
         }
     }
 }

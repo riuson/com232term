@@ -22,11 +22,13 @@ namespace com232term.Classes.Options
 
         public PortSettings PortOptions { get; set; }
         public LogSettings LogOptions { get; set; }
+        public SendSettings SendOptions { get; set; }
 
         private Options ()
 	    {
             this.PortOptions = new PortSettings();
             this.LogOptions = new LogSettings();
+            this.SendOptions = new SendSettings();
 	    }
 
         public static string FileName

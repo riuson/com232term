@@ -13,6 +13,7 @@
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
+            com232term.Classes.Options.Options.Save();
             this.mWorker.Dispose();
             if (disposing && (components != null))
             {
@@ -31,7 +32,10 @@
         {
             System.Windows.Forms.ToolStripContainer toolStripContainer1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            this.toolStripConsole = new com232term.Controls.DataSender.ToolStripDataSenderGuiConsole();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
+            this.toolStripDataSenderGuiButtonsLast = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsLast();
+            this.toolStripDataSenderGuiButtonsStatic = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsStatic();
             this.tsConnectionMenu = new System.Windows.Forms.ToolStrip();
             this.tssbConnect = new System.Windows.Forms.ToolStripSplitButton();
             this.tscbPortName = new System.Windows.Forms.ToolStripComboBox();
@@ -46,7 +50,9 @@
             this.tsmiColorSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColorTime = new System.Windows.Forms.ToolStripMenuItem();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
+            toolStripContainer1.RightToolStripPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             this.tsConnectionMenu.SuspendLayout();
@@ -56,13 +62,22 @@
             // toolStripContainer1
             // 
             // 
+            // toolStripContainer1.BottomToolStripPanel
+            // 
+            toolStripContainer1.BottomToolStripPanel.Controls.Add(this.toolStripConsole);
+            // 
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(this.rtbLog);
-            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(859, 404);
+            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(801, 379);
             toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
+            // 
+            // toolStripContainer1.RightToolStripPanel
+            // 
+            toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripDataSenderGuiButtonsLast);
+            toolStripContainer1.RightToolStripPanel.Controls.Add(this.toolStripDataSenderGuiButtonsStatic);
             toolStripContainer1.Size = new System.Drawing.Size(859, 429);
             toolStripContainer1.TabIndex = 0;
             toolStripContainer1.Text = "toolStripContainer1";
@@ -72,15 +87,45 @@
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsConnectionMenu);
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsLogMenu);
             // 
+            // toolStripConsole
+            // 
+            this.toolStripConsole.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripConsole.Location = new System.Drawing.Point(0, 0);
+            this.toolStripConsole.Name = "toolStripConsole";
+            this.toolStripConsole.Size = new System.Drawing.Size(859, 25);
+            this.toolStripConsole.Stretch = true;
+            this.toolStripConsole.TabIndex = 0;
+            this.toolStripConsole.Text = "Console";
+            // 
             // rtbLog
             // 
             this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(859, 404);
+            this.rtbLog.Size = new System.Drawing.Size(801, 379);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
+            // 
+            // toolStripDataSenderGuiButtonsLast
+            // 
+            this.toolStripDataSenderGuiButtonsLast.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripDataSenderGuiButtonsLast.Location = new System.Drawing.Point(0, 0);
+            this.toolStripDataSenderGuiButtonsLast.Name = "toolStripDataSenderGuiButtonsLast";
+            this.toolStripDataSenderGuiButtonsLast.Size = new System.Drawing.Size(26, 379);
+            this.toolStripDataSenderGuiButtonsLast.Stretch = true;
+            this.toolStripDataSenderGuiButtonsLast.TabIndex = 1;
+            this.toolStripDataSenderGuiButtonsLast.Text = "Last sended packets";
+            // 
+            // toolStripDataSenderGuiButtonsStatic
+            // 
+            this.toolStripDataSenderGuiButtonsStatic.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripDataSenderGuiButtonsStatic.Location = new System.Drawing.Point(26, 0);
+            this.toolStripDataSenderGuiButtonsStatic.Name = "toolStripDataSenderGuiButtonsStatic";
+            this.toolStripDataSenderGuiButtonsStatic.Size = new System.Drawing.Size(32, 379);
+            this.toolStripDataSenderGuiButtonsStatic.Stretch = true;
+            this.toolStripDataSenderGuiButtonsStatic.TabIndex = 2;
+            this.toolStripDataSenderGuiButtonsStatic.Text = "Static packets";
             // 
             // tsConnectionMenu
             // 
@@ -146,9 +191,9 @@
             this.tsLogMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsddbFormat,
             this.tsddbColors});
-            this.tsLogMenu.Location = new System.Drawing.Point(145, 0);
+            this.tsLogMenu.Location = new System.Drawing.Point(83, 0);
             this.tsLogMenu.Name = "tsLogMenu";
-            this.tsLogMenu.Size = new System.Drawing.Size(181, 25);
+            this.tsLogMenu.Size = new System.Drawing.Size(150, 25);
             this.tsLogMenu.TabIndex = 1;
             this.tsLogMenu.Text = "Log format";
             // 
@@ -178,28 +223,28 @@
             // tsmiColorTransmitted
             // 
             this.tsmiColorTransmitted.Name = "tsmiColorTransmitted";
-            this.tsmiColorTransmitted.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorTransmitted.Size = new System.Drawing.Size(138, 22);
             this.tsmiColorTransmitted.Text = "Transmitted";
             this.tsmiColorTransmitted.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // tsmiColorReceived
             // 
             this.tsmiColorReceived.Name = "tsmiColorReceived";
-            this.tsmiColorReceived.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorReceived.Size = new System.Drawing.Size(138, 22);
             this.tsmiColorReceived.Text = "Received";
             this.tsmiColorReceived.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // tsmiColorSystem
             // 
             this.tsmiColorSystem.Name = "tsmiColorSystem";
-            this.tsmiColorSystem.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorSystem.Size = new System.Drawing.Size(138, 22);
             this.tsmiColorSystem.Text = "System";
             this.tsmiColorSystem.Click += new System.EventHandler(this.OnColorsClick);
             // 
             // tsmiColorTime
             // 
             this.tsmiColorTime.Name = "tsmiColorTime";
-            this.tsmiColorTime.Size = new System.Drawing.Size(152, 22);
+            this.tsmiColorTime.Size = new System.Drawing.Size(138, 22);
             this.tsmiColorTime.Text = "Time";
             this.tsmiColorTime.Click += new System.EventHandler(this.OnColorsClick);
             // 
@@ -211,7 +256,11 @@
             this.Controls.Add(toolStripContainer1);
             this.Name = "FormMain";
             this.Text = "Com232Term";
+            toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+            toolStripContainer1.BottomToolStripPanel.PerformLayout();
             toolStripContainer1.ContentPanel.ResumeLayout(false);
+            toolStripContainer1.RightToolStripPanel.ResumeLayout(false);
+            toolStripContainer1.RightToolStripPanel.PerformLayout();
             toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             toolStripContainer1.TopToolStripPanel.PerformLayout();
             toolStripContainer1.ResumeLayout(false);
@@ -240,6 +289,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiColorReceived;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorSystem;
         private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
+        private Controls.DataSender.ToolStripDataSenderGuiConsole toolStripConsole;
+        private Controls.DataSender.ToolStripDataSenderGuiButtonsLast toolStripDataSenderGuiButtonsLast;
+        private Controls.DataSender.ToolStripDataSenderGuiButtonsStatic toolStripDataSenderGuiButtonsStatic;
     }
 }
 
