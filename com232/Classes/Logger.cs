@@ -139,6 +139,7 @@ namespace com232term.Classes
 
         public void Clear()
         {
+            this.mBox.Clear();
         }
     }
 }

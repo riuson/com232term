@@ -15,7 +15,6 @@ namespace com232term.Controls.DataSender
         private ToolStripDropDownButton mButtonColors;
         private ToolStripButton mButtonClear;
         private ILogger mLogger;
-        public event EventHandler OnClear;
 
         public ToolStripLogsGui()
         {
@@ -112,8 +111,8 @@ namespace com232term.Controls.DataSender
 
         private void mButtonClear_Click(object sender, EventArgs e)
         {
-            if (this.OnClear != null)
-                this.OnClear(this, EventArgs.Empty);
+            if (this.mLogger != null)
+                this.mLogger.Clear();
         }
 
         [Browsable(false)]
