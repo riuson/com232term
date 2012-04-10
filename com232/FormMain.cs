@@ -33,6 +33,7 @@ namespace com232term
 
             this.mSender = new DataSender();
             this.mSender.OnStaticEditorCall += new EventHandler<CallPacketsEditorEventArgs>(mSender_OnStaticEditorCall);
+            this.mSender.OnSendData += new EventHandler<SendDataEventArgs>(mSender_OnSendData);
             this.toolStripConsole.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
@@ -276,6 +277,11 @@ namespace com232term
             {
                 dialog.ShowDialog();
             }
+        }
+
+        private void mSender_OnSendData(object sender, SendDataEventArgs e)
+        {
+            this.mWorker.Send(e.Data);
         }
     }
 }
