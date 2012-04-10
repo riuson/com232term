@@ -47,6 +47,7 @@
     <Compile Include="Classes\DataSender.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />
     <Compile Include="Classes\IDataSender.cs" />
+    <Compile Include="Classes\ILogger.cs" />
     <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\Options\LogSettings.cs" />
     <Compile Include="Classes\Options\Options.cs" />
@@ -68,6 +69,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DataSender\ToolStripDataSenderGuiButtonsStatic.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Logs\ToolStripLogsGui.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="FormMain.cs">

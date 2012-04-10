@@ -7,70 +7,44 @@ using System.Drawing;
 
 namespace com232term.Classes
 {
-    public class Logger
+    public class Logger : ILogger, IDisposable
     {
-        public static LogSettings.DisplayFormat[] DisplayFormats
-        {
-            get
-            {
-                List<LogSettings.DisplayFormat> result = new List<LogSettings.DisplayFormat>();
-                foreach (LogSettings.DisplayFormat a in Enum.GetValues(typeof(LogSettings.DisplayFormat)))
-                {
-                    result.Add(a);
-                }
-                return result.ToArray();
-            }
-        }
-
         private object mSync;
         private RichTextBox mBox;
-        private LogSettings mLogOptions;
+        public LogSettings Settings { get; private set; }
 
         public Logger(RichTextBox box)
         {
             this.mSync = new object();
-            this.mLogOptions = new  LogSettings();
+            this.Settings = Options.Options.Instance.LogOptions;
             this.mBox = box;
         }
 
-        public LogSettings LogOptions
+        public void Dispose()
         {
-            get
-            {
-                lock (this.mSync)
-                {
-                    return this.mLogOptions;
-                }
-            }
-            set
-            {
-                lock (this.mSync)
-                {
-                    this.mLogOptions = value;
-                }
-            }
+            Options.Options.Instance.LogOptions = this.Settings;
         }
 
         public void LogData(DateTime time, Direction direction, byte[] array)
         {
             Color foreColor;
             if (direction == Direction.Received)
-                foreColor = this.LogOptions.ReceivedColor;
+                foreColor = this.Settings.ReceivedColor;
             else
-                foreColor = this.LogOptions.TransmittedColor;
+                foreColor = this.Settings.TransmittedColor;
 
 
             // time
             this.mBox.AppendText(String.Format("\n"));
-            
-            if (direction == Direction.Received)
-                this.mBox.AppendText(">>> ", this.LogOptions.TimeColor);
-            else
-                this.mBox.AppendText("<<< ", this.LogOptions.TimeColor);
 
-            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.LogOptions.TimeColor);
+            if (direction == Direction.Received)
+                this.mBox.AppendText(">>> ", this.Settings.TimeColor);
+            else
+                this.mBox.AppendText("<<< ", this.Settings.TimeColor);
+
+            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.Settings.TimeColor);
             this.mBox.AppendText(String.Format("\n"));
-            
+
             LogSettings.DisplayFormat format = Options.Options.Instance.LogOptions.Format;
 
             if ((format & LogSettings.DisplayFormat.Hex) == LogSettings.DisplayFormat.Hex)
@@ -87,7 +61,7 @@ namespace com232term.Classes
             if ((format & LogSettings.DisplayFormat.Ascii) == LogSettings.DisplayFormat.Ascii)
             {
                 StringBuilder sb = new StringBuilder();
-                foreach(char c in (Encoding.ASCII.GetString(array)))
+                foreach (char c in (Encoding.ASCII.GetString(array)))
                 {
                     if (!Char.IsControl(c) || (c == '\r') || (c == '\n'))
                         sb.Append(c);
@@ -124,16 +98,20 @@ namespace com232term.Classes
         public void LogMessage(DateTime time, string message)
         {
             Color foreColor;
-            foreColor = this.LogOptions.SystemColor;
+            foreColor = this.Settings.SystemColor;
 
 
             // time
             this.mBox.AppendText(String.Format("\n"));
-            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.LogOptions.TimeColor);
+            this.mBox.AppendText(String.Format("{0:yyyy.MM.dd - HH:mm:ss.ffff}", time), this.Settings.TimeColor);
             this.mBox.AppendText(String.Format("\n"));
 
             this.mBox.AppendText(message, foreColor);
             this.mBox.AppendText("\n");
+        }
+
+        public void Clear()
+        {
         }
     }
 }

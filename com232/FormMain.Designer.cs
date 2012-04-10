@@ -42,13 +42,7 @@
             this.tscbBaudrates = new System.Windows.Forms.ToolStripComboBox();
             this.tscbParity = new System.Windows.Forms.ToolStripComboBox();
             this.tscbStopBits = new System.Windows.Forms.ToolStripComboBox();
-            this.tsLogMenu = new System.Windows.Forms.ToolStrip();
-            this.tsddbFormat = new System.Windows.Forms.ToolStripDropDownButton();
-            this.tsddbColors = new System.Windows.Forms.ToolStripDropDownButton();
-            this.tsmiColorTransmitted = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiColorReceived = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiColorSystem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiColorTime = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripLogsGui = new com232term.Controls.DataSender.ToolStripLogsGui();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
@@ -56,7 +50,6 @@
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
             this.tsConnectionMenu.SuspendLayout();
-            this.tsLogMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -69,7 +62,7 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(this.rtbLog);
-            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(801, 379);
+            toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(807, 379);
             toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             toolStripContainer1.Name = "toolStripContainer1";
@@ -85,7 +78,7 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsConnectionMenu);
-            toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsLogMenu);
+            toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStripLogsGui);
             // 
             // toolStripConsole
             // 
@@ -103,7 +96,7 @@
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(801, 379);
+            this.rtbLog.Size = new System.Drawing.Size(807, 379);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
@@ -122,7 +115,7 @@
             this.toolStripDataSenderGuiButtonsStatic.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStripDataSenderGuiButtonsStatic.Location = new System.Drawing.Point(26, 0);
             this.toolStripDataSenderGuiButtonsStatic.Name = "toolStripDataSenderGuiButtonsStatic";
-            this.toolStripDataSenderGuiButtonsStatic.Size = new System.Drawing.Size(32, 379);
+            this.toolStripDataSenderGuiButtonsStatic.Size = new System.Drawing.Size(26, 379);
             this.toolStripDataSenderGuiButtonsStatic.Stretch = true;
             this.toolStripDataSenderGuiButtonsStatic.TabIndex = 2;
             this.toolStripDataSenderGuiButtonsStatic.Text = "Static packets";
@@ -185,68 +178,13 @@
             this.tscbStopBits.ToolTipText = "Stop Bits";
             this.tscbStopBits.SelectedIndexChanged += new System.EventHandler(this.OnPortSettingsChanged);
             // 
-            // tsLogMenu
+            // toolStripLogsGui
             // 
-            this.tsLogMenu.Dock = System.Windows.Forms.DockStyle.None;
-            this.tsLogMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsddbFormat,
-            this.tsddbColors});
-            this.tsLogMenu.Location = new System.Drawing.Point(83, 0);
-            this.tsLogMenu.Name = "tsLogMenu";
-            this.tsLogMenu.Size = new System.Drawing.Size(150, 25);
-            this.tsLogMenu.TabIndex = 1;
-            this.tsLogMenu.Text = "Log format";
-            // 
-            // tsddbFormat
-            // 
-            this.tsddbFormat.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsddbFormat.Image = ((System.Drawing.Image)(resources.GetObject("tsddbFormat.Image")));
-            this.tsddbFormat.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsddbFormat.Name = "tsddbFormat";
-            this.tsddbFormat.Size = new System.Drawing.Size(84, 22);
-            this.tsddbFormat.Text = "Format: Hex";
-            // 
-            // tsddbColors
-            // 
-            this.tsddbColors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsddbColors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiColorTransmitted,
-            this.tsmiColorReceived,
-            this.tsmiColorSystem,
-            this.tsmiColorTime});
-            this.tsddbColors.Image = ((System.Drawing.Image)(resources.GetObject("tsddbColors.Image")));
-            this.tsddbColors.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsddbColors.Name = "tsddbColors";
-            this.tsddbColors.Size = new System.Drawing.Size(54, 22);
-            this.tsddbColors.Text = "Colors";
-            // 
-            // tsmiColorTransmitted
-            // 
-            this.tsmiColorTransmitted.Name = "tsmiColorTransmitted";
-            this.tsmiColorTransmitted.Size = new System.Drawing.Size(138, 22);
-            this.tsmiColorTransmitted.Text = "Transmitted";
-            this.tsmiColorTransmitted.Click += new System.EventHandler(this.OnColorsClick);
-            // 
-            // tsmiColorReceived
-            // 
-            this.tsmiColorReceived.Name = "tsmiColorReceived";
-            this.tsmiColorReceived.Size = new System.Drawing.Size(138, 22);
-            this.tsmiColorReceived.Text = "Received";
-            this.tsmiColorReceived.Click += new System.EventHandler(this.OnColorsClick);
-            // 
-            // tsmiColorSystem
-            // 
-            this.tsmiColorSystem.Name = "tsmiColorSystem";
-            this.tsmiColorSystem.Size = new System.Drawing.Size(138, 22);
-            this.tsmiColorSystem.Text = "System";
-            this.tsmiColorSystem.Click += new System.EventHandler(this.OnColorsClick);
-            // 
-            // tsmiColorTime
-            // 
-            this.tsmiColorTime.Name = "tsmiColorTime";
-            this.tsmiColorTime.Size = new System.Drawing.Size(138, 22);
-            this.tsmiColorTime.Text = "Time";
-            this.tsmiColorTime.Click += new System.EventHandler(this.OnColorsClick);
+            this.toolStripLogsGui.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripLogsGui.Location = new System.Drawing.Point(83, 0);
+            this.toolStripLogsGui.Name = "toolStripLogsGui";
+            this.toolStripLogsGui.Size = new System.Drawing.Size(193, 25);
+            this.toolStripLogsGui.TabIndex = 1;
             // 
             // FormMain
             // 
@@ -267,8 +205,6 @@
             toolStripContainer1.PerformLayout();
             this.tsConnectionMenu.ResumeLayout(false);
             this.tsConnectionMenu.PerformLayout();
-            this.tsLogMenu.ResumeLayout(false);
-            this.tsLogMenu.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -282,16 +218,10 @@
         private System.Windows.Forms.ToolStripComboBox tscbBaudrates;
         private System.Windows.Forms.ToolStripComboBox tscbParity;
         private System.Windows.Forms.ToolStripComboBox tscbStopBits;
-        private System.Windows.Forms.ToolStrip tsLogMenu;
-        private System.Windows.Forms.ToolStripDropDownButton tsddbFormat;
-        private System.Windows.Forms.ToolStripDropDownButton tsddbColors;
-        private System.Windows.Forms.ToolStripMenuItem tsmiColorTransmitted;
-        private System.Windows.Forms.ToolStripMenuItem tsmiColorReceived;
-        private System.Windows.Forms.ToolStripMenuItem tsmiColorSystem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiColorTime;
         private Controls.DataSender.ToolStripDataSenderGuiConsole toolStripConsole;
         private Controls.DataSender.ToolStripDataSenderGuiButtonsLast toolStripDataSenderGuiButtonsLast;
         private Controls.DataSender.ToolStripDataSenderGuiButtonsStatic toolStripDataSenderGuiButtonsStatic;
+        private Controls.DataSender.ToolStripLogsGui toolStripLogsGui;
     }
 }
 
