@@ -20,10 +20,10 @@ namespace com232term.Classes.Options
 
         public LogSettings()
         {
-            this.TransmittedColor = Color.Green;
-            this.ReceivedColor = Color.Blue;
-            this.SystemColor = Color.Silver;
-            this.TimeColor = Color.Navy;
+            this.TransmittedColor = Color.Blue;
+            this.ReceivedColor = Color.Green;
+            this.SystemColor = Color.Orange;
+            this.TimeColor = Color.Silver;
             this.mFormat = DisplayFormat.Hex;
         }
         public ColorSerialized TransmittedColor { get; set; }
