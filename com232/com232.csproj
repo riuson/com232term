@@ -55,6 +55,7 @@
     <Compile Include="Classes\Options\PortSettings.cs" />
     <Compile Include="Classes\Options\ColorSerialized.cs" />
     <Compile Include="Classes\Options\SendSettings.cs" />
+    <Compile Include="Classes\PacketsHolder.cs" />
     <Compile Include="Classes\RichTextBoxExt.cs" />
     <Compile Include="Classes\SerialPortFixed.cs">
       <SubType>Component</SubType>

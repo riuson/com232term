@@ -10,21 +10,18 @@ namespace com232term.Classes
 {
     public class DataSender : IDataSender, IDisposable
     {
-        public BindingList<String> Packets { get; private set; }
-        public BindingList<String> PacketsStatic { get; private set; }
+        private PacketsHolder mPackets;
+
+        public BindingList<String> Packets { get { return this.mPackets.Packets; } }
+        public BindingList<String> PacketsStatic { get { return this.mPackets.PacketsStatic; } }
         public event EventHandler<CallPacketsEditorEventArgs> OnStaticEditorCall;
         public event EventHandler<SendDataEventArgs> OnSendData;
         public SendSettings Settings { get; set; }
 
         public DataSender()
         {
-            this.Packets = new BindingList<string>();
-            this.Packets.Add("1");
-            this.Packets.Add("2");
 
-            this.PacketsStatic = new BindingList<string>();
-            this.PacketsStatic.Add("one");
-            this.PacketsStatic.Add("two");
+            this.mPackets = PacketsHolder.Load();
 
             this.Settings = Options.Options.Instance.SendOptions;
         }
@@ -32,6 +29,7 @@ namespace com232term.Classes
         public void Dispose()
         {
             Options.Options.Instance.SendOptions = this.Settings;
+            this.mPackets.Save();
         }
 
         public void Send(string packet)

@@ -38,6 +38,14 @@ namespace com232term
             this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
         }
 
+        private void BeforeDisposing()
+        {
+            com232term.Classes.Options.Options.Save();
+            this.mWorker.Dispose();
+            this.mSender.Dispose();
+            this.mLogger.Dispose();
+        }
+
         private void mWorker_OnDataLog(object sender, DataLogEventArgs e)
         {
             this.mLogger.LogData(e.Time, e.DataDirection, e.Value);

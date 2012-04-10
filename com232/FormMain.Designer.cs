@@ -13,8 +13,7 @@
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
-            com232term.Classes.Options.Options.Save();
-            this.mWorker.Dispose();
+            this.BeforeDisposing();
             if (disposing && (components != null))
             {
                 components.Dispose();
