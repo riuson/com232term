@@ -28,12 +28,16 @@ namespace com232term.Controls.DataSender
             {
                 Alignment = ToolStripItemAlignment.Right,
                 Text = "\\n",
+                AutoSize = false,
+                Width = 50
             };
 
             this.mButtonFormat = new ToolStripDropDownButton()
             {
                 Alignment = ToolStripItemAlignment.Right,
                 Text = "None",
+                AutoSize = false,
+                Width = 50
             };
 
             this.mButtonSend = new ToolStripButton()
