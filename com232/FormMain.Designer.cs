@@ -31,25 +31,18 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.ToolStripContainer toolStripContainer1;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.toolStripConsole = new com232term.Controls.DataSender.ToolStripDataSenderGuiConsole();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.toolStripDataSenderGuiButtonsLast = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsLast();
             this.toolStripDataSenderGuiButtonsStatic = new com232term.Controls.DataSender.ToolStripDataSenderGuiButtonsStatic();
-            this.tsConnectionMenu = new System.Windows.Forms.ToolStrip();
-            this.tssbConnect = new System.Windows.Forms.ToolStripSplitButton();
-            this.tscbPortName = new System.Windows.Forms.ToolStripComboBox();
-            this.tscbBaudrates = new System.Windows.Forms.ToolStripComboBox();
-            this.tscbParity = new System.Windows.Forms.ToolStripComboBox();
-            this.tscbStopBits = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLogsGui = new com232term.Controls.DataSender.ToolStripLogsGui();
+            this.toolStripConnectionGui = new com232term.Controls.DataSender.ToolStripConnectionGui();
             toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             toolStripContainer1.ContentPanel.SuspendLayout();
             toolStripContainer1.RightToolStripPanel.SuspendLayout();
             toolStripContainer1.TopToolStripPanel.SuspendLayout();
             toolStripContainer1.SuspendLayout();
-            this.tsConnectionMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -77,7 +70,7 @@
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsConnectionMenu);
+            toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStripConnectionGui);
             toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStripLogsGui);
             // 
             // toolStripConsole
@@ -120,71 +113,21 @@
             this.toolStripDataSenderGuiButtonsStatic.TabIndex = 2;
             this.toolStripDataSenderGuiButtonsStatic.Text = "Static packets";
             // 
-            // tsConnectionMenu
-            // 
-            this.tsConnectionMenu.Dock = System.Windows.Forms.DockStyle.None;
-            this.tsConnectionMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tssbConnect});
-            this.tsConnectionMenu.Location = new System.Drawing.Point(3, 0);
-            this.tsConnectionMenu.Name = "tsConnectionMenu";
-            this.tsConnectionMenu.Size = new System.Drawing.Size(80, 25);
-            this.tsConnectionMenu.TabIndex = 0;
-            this.tsConnectionMenu.Text = "Port";
-            // 
-            // tssbConnect
-            // 
-            this.tssbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tssbConnect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tscbPortName,
-            this.tscbBaudrates,
-            this.tscbParity,
-            this.tscbStopBits});
-            this.tssbConnect.Image = ((System.Drawing.Image)(resources.GetObject("tssbConnect.Image")));
-            this.tssbConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tssbConnect.Name = "tssbConnect";
-            this.tssbConnect.Size = new System.Drawing.Size(68, 22);
-            this.tssbConnect.Text = "Connect";
-            this.tssbConnect.ButtonClick += new System.EventHandler(this.OnConnectionClick);
-            // 
-            // tscbPortName
-            // 
-            this.tscbPortName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscbPortName.Name = "tscbPortName";
-            this.tscbPortName.Size = new System.Drawing.Size(300, 23);
-            this.tscbPortName.ToolTipText = "Port Name";
-            this.tscbPortName.SelectedIndexChanged += new System.EventHandler(this.OnPortSettingsChanged);
-            // 
-            // tscbBaudrates
-            // 
-            this.tscbBaudrates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscbBaudrates.Name = "tscbBaudrates";
-            this.tscbBaudrates.Size = new System.Drawing.Size(121, 23);
-            this.tscbBaudrates.ToolTipText = "Baudrate";
-            this.tscbBaudrates.SelectedIndexChanged += new System.EventHandler(this.OnPortSettingsChanged);
-            // 
-            // tscbParity
-            // 
-            this.tscbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscbParity.Name = "tscbParity";
-            this.tscbParity.Size = new System.Drawing.Size(121, 23);
-            this.tscbParity.ToolTipText = "Parity";
-            this.tscbParity.SelectedIndexChanged += new System.EventHandler(this.OnPortSettingsChanged);
-            // 
-            // tscbStopBits
-            // 
-            this.tscbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscbStopBits.Name = "tscbStopBits";
-            this.tscbStopBits.Size = new System.Drawing.Size(121, 23);
-            this.tscbStopBits.ToolTipText = "Stop Bits";
-            this.tscbStopBits.SelectedIndexChanged += new System.EventHandler(this.OnPortSettingsChanged);
-            // 
             // toolStripLogsGui
             // 
             this.toolStripLogsGui.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripLogsGui.Location = new System.Drawing.Point(83, 0);
+            this.toolStripLogsGui.Location = new System.Drawing.Point(187, 0);
             this.toolStripLogsGui.Name = "toolStripLogsGui";
-            this.toolStripLogsGui.Size = new System.Drawing.Size(193, 25);
+            this.toolStripLogsGui.Size = new System.Drawing.Size(162, 25);
             this.toolStripLogsGui.TabIndex = 1;
+            // 
+            // toolStripConnectionGui
+            // 
+            this.toolStripConnectionGui.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripConnectionGui.Location = new System.Drawing.Point(19, 0);
+            this.toolStripConnectionGui.Name = "toolStripConnectionGui";
+            this.toolStripConnectionGui.Size = new System.Drawing.Size(111, 25);
+            this.toolStripConnectionGui.TabIndex = 2;
             // 
             // FormMain
             // 
@@ -203,8 +146,6 @@
             toolStripContainer1.TopToolStripPanel.PerformLayout();
             toolStripContainer1.ResumeLayout(false);
             toolStripContainer1.PerformLayout();
-            this.tsConnectionMenu.ResumeLayout(false);
-            this.tsConnectionMenu.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -212,16 +153,11 @@
         #endregion
 
         private System.Windows.Forms.RichTextBox rtbLog;
-        private System.Windows.Forms.ToolStrip tsConnectionMenu;
-        private System.Windows.Forms.ToolStripSplitButton tssbConnect;
-        private System.Windows.Forms.ToolStripComboBox tscbPortName;
-        private System.Windows.Forms.ToolStripComboBox tscbBaudrates;
-        private System.Windows.Forms.ToolStripComboBox tscbParity;
-        private System.Windows.Forms.ToolStripComboBox tscbStopBits;
         private Controls.DataSender.ToolStripDataSenderGuiConsole toolStripConsole;
         private Controls.DataSender.ToolStripDataSenderGuiButtonsLast toolStripDataSenderGuiButtonsLast;
         private Controls.DataSender.ToolStripDataSenderGuiButtonsStatic toolStripDataSenderGuiButtonsStatic;
         private Controls.DataSender.ToolStripLogsGui toolStripLogsGui;
+        private Controls.DataSender.ToolStripConnectionGui toolStripConnectionGui;
     }
 }
 

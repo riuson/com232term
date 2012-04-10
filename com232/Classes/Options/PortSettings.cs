@@ -74,7 +74,8 @@ namespace com232term.Classes.Options
                 List<StopBits> result = new List<StopBits>();
                 foreach (StopBits a in Enum.GetValues(typeof(StopBits)))
                 {
-                    result.Add(a);
+                    if (a != StopBits.None)
+                        result.Add(a);
                 }
                 return result.ToArray();
             }
