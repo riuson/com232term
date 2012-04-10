@@ -7,7 +7,7 @@ using com232term.Classes.Options;
 
 namespace com232term.Classes
 {
-    public class Worker : IDisposable
+    public class Worker : IWorker, IDisposable
     {
         private Thread mThread;
         private bool mNeedStop;
@@ -19,21 +19,19 @@ namespace com232term.Classes
         private System.Windows.Forms.Timer mTimerSync;
         private bool mPortOpenedLastState;
 
-        public event EventHandler OnSettingsChanged;
+        public PortSettings Settings { get; private set; }
         public event EventHandler<DataLogEventArgs> OnDataLog;
         public event EventHandler<MessageLogEventArgs> OnMessageLog;
-        public event EventHandler OnOpened;
-        public event EventHandler OnClosed;
-        public PortSettings PortOptions { get; private set; }
+        public event EventHandler OnConnectionChanged;
 
         public Worker()
         {
-            this.PortOptions = new PortSettings();
+            this.Settings = Options.Options.Instance.PortOptions;
             this.mStopEvent = new AutoResetEvent(false);
             this.mIncomingTasksQueue = new Queue<ThreadedMethod>();
             this.mOutgoingTasksQueue = new Queue<ThreadedMethod>();
             this.mNeedStop = false;
-            this.mPort = new SerialPortFixed(this.PortOptions.PortName, this.PortOptions.Baudrate, this.PortOptions.Parity, 8, this.PortOptions.StopBits);
+            this.mPort = new SerialPortFixed(this.Settings.PortName, this.Settings.Baudrate, this.Settings.Parity, 8, this.Settings.StopBits);
             this.mThread = new Thread(new ThreadStart(this.Work));
             this.mDataReceived = false;
             this.mPortOpenedLastState = false;
@@ -52,17 +50,7 @@ namespace com232term.Classes
             this.mStopEvent.Reset();
             this.mNeedStop = true;
             this.mStopEvent.WaitOne();
-        }
-
-        public void SetPortName(string portname, int baudrate, Parity parity, StopBits stopbits)
-        {
-            this.PortOptions.PortName = portname;
-            this.PortOptions.Baudrate = baudrate;
-            this.PortOptions.Parity = parity;
-            this.PortOptions.StopBits = stopbits;
-
-            if (this.OnSettingsChanged != null)
-                this.OnSettingsChanged(this, EventArgs.Empty);
+            Options.Options.Instance.PortOptions = this.Settings;
         }
 
         private void Work()
@@ -120,22 +108,23 @@ namespace com232term.Classes
         {
             lock (this.mPort)
             {
-                if (this.PortOptions.PortName == String.Empty)
+                if (this.Settings.PortName == String.Empty)
                     return false;
 
-                if (this.mPort.PortName != this.PortOptions.PortName.ExtractPortName() ||
-                    this.mPort.BaudRate != this.PortOptions.Baudrate ||
-                    this.mPort.Parity != this.PortOptions.Parity ||
-                    this.mPort.StopBits != this.PortOptions.StopBits)
+                if (this.mPort.PortName != this.Settings.PortName.ExtractPortName() ||
+                    this.mPort.BaudRate != this.Settings.Baudrate ||
+                    this.mPort.Parity != this.Settings.Parity ||
+                    this.mPort.StopBits != this.Settings.StopBits)
                 {
                     bool opened = this.mPort.IsOpen;
                     if (opened)
                         this.mPort.Close();
 
-                    this.mPort.PortName = this.PortOptions.PortName.ExtractPortName();
-                    this.mPort.BaudRate = this.PortOptions.Baudrate;
-                    this.mPort.Parity = this.PortOptions.Parity;
-                    this.mPort.StopBits = this.PortOptions.StopBits;
+                    this.mPort.PortName = this.Settings.PortName.ExtractPortName();
+                    this.mPort.BaudRate = this.Settings.Baudrate;
+                    this.mPort.Parity = this.Settings.Parity;
+                    this.mPort.StopBits = this.Settings.StopBits;
+                    //this.mPort.
 
                     if (opened)
                         this.mPort.Open();
@@ -143,10 +132,10 @@ namespace com232term.Classes
                     this.EnqueueOutgoingTask(delegate()
                     {
                         this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}",
-                            this.PortOptions.PortName,
-                            this.PortOptions.Baudrate,
-                            this.PortOptions.Parity,
-                            this.PortOptions.StopBits));
+                            this.Settings.PortName,
+                            this.Settings.Baudrate,
+                            this.Settings.Parity,
+                            this.Settings.StopBits));
                     });
                 }
 
@@ -158,25 +147,25 @@ namespace com232term.Classes
                     {
                         this.EnqueueOutgoingTask(delegate()
                         {
-                            if (this.OnOpened != null)
-                                this.OnOpened(this, EventArgs.Empty);
+                            if (this.OnConnectionChanged != null)
+                                this.OnConnectionChanged(this, EventArgs.Empty);
 
                             this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}",
-                                this.PortOptions.PortName,
-                                this.PortOptions.Baudrate,
-                                this.PortOptions.Parity,
-                                this.PortOptions.StopBits));
+                                this.Settings.PortName,
+                                this.Settings.Baudrate,
+                                this.Settings.Parity,
+                                this.Settings.StopBits));
                         });
                     }
                     else
                     {
                         this.EnqueueOutgoingTask(delegate()
                         {
-                            if (this.OnClosed != null)
-                                this.OnClosed(this, EventArgs.Empty);
+                            if (this.OnConnectionChanged != null)
+                                this.OnConnectionChanged(this, EventArgs.Empty);
 
                             this.LogMessage(String.Format("Port closed: {0}",
-                                this.PortOptions.PortName));
+                                this.Settings.PortName));
                         });
                     }
                 }
@@ -210,14 +199,14 @@ namespace com232term.Classes
                     {
                         this.EnqueueOutgoingTask(delegate()
                         {
-                            if (this.OnOpened != null)
-                                this.OnOpened(this, EventArgs.Empty);
+                            if (this.OnConnectionChanged != null)
+                                this.OnConnectionChanged(this, EventArgs.Empty);
 
                             this.LogMessage(String.Format("Unable to open port: {0}, {1}, {2}, {3}",
-                                this.PortOptions.PortName,
-                                this.PortOptions.Baudrate,
-                                this.PortOptions.Parity,
-                                this.PortOptions.StopBits));
+                                this.Settings.PortName,
+                                this.Settings.Baudrate,
+                                this.Settings.Parity,
+                                this.Settings.StopBits));
                         });
 
                     }
