@@ -58,6 +58,9 @@ namespace com232term.Controls.DataSender
                         format &= ~formatItem;
                     else
                         format |= formatItem;
+
+                    if (format == 0)
+                        format = LogSettings.DisplayFormat.Auto;
                 }
                 else
                     format = LogSettings.DisplayFormat.Auto;

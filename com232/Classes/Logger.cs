@@ -47,6 +47,33 @@ namespace com232term.Classes
 
             LogSettings.DisplayFormat format = Options.Options.Instance.LogOptions.Format;
 
+            if ((format & LogSettings.DisplayFormat.Auto) == LogSettings.DisplayFormat.Auto)
+            {
+                bool isHex = false;
+                bool isAscii = true;
+                foreach (byte b in array)
+                {
+                    if ((b < 32) && (b != 13) && (b != 10))
+                    {
+                        isHex = true;
+                        isAscii = false;
+                        break;
+                    }
+                    if (b > 128)
+                        isAscii = false;
+                }
+
+                if (isHex)
+                    format = LogSettings.DisplayFormat.Hex;
+                else
+                {
+                    if (isAscii)
+                        format = LogSettings.DisplayFormat.Ascii;
+                    else
+                        format = LogSettings.DisplayFormat.Utf8;
+                }
+            }
+
             if ((format & LogSettings.DisplayFormat.Hex) == LogSettings.DisplayFormat.Hex)
             {
                 StringBuilder sb = new StringBuilder();
