@@ -9,7 +9,7 @@ namespace com232term.Classes.Options
     public class SendSettings
     {
         [TypeConverter(typeof(EnumConverter))]
-        public enum SendLineEnd
+        public enum LineEnds
         {
             [Description("None")]
             None,
@@ -23,7 +23,7 @@ namespace com232term.Classes.Options
             RN
         }
 
-        public enum ParseFormat
+        public enum ParseFormats
         {
             Auto,
             Hex,
@@ -33,11 +33,37 @@ namespace com232term.Classes.Options
 
         public SendSettings()
         {
-            this.LineEnd = SendLineEnd.None;
-            this.Format = ParseFormat.Auto;
+            this.LineEnd = LineEnds.None;
+            this.Format = ParseFormats.Auto;
         }
 
-        public SendLineEnd LineEnd { get; set; }
-        public ParseFormat Format { get; set; }
+        public LineEnds LineEnd { get; set; }
+        public ParseFormats Format { get; set; }
+
+        public static LineEnds[] LineEndsList
+        {
+            get
+            {
+                List<LineEnds> result = new List<LineEnds>();
+                foreach (LineEnds a in Enum.GetValues(typeof(LineEnds)))
+                {
+                    result.Add(a);
+                }
+                return result.ToArray();
+            }
+        }
+
+        public static ParseFormats[] ParseFormatsList
+        {
+            get
+            {
+                List<ParseFormats> result = new List<ParseFormats>();
+                foreach (ParseFormats a in Enum.GetValues(typeof(ParseFormats)))
+                {
+                    result.Add(a);
+                }
+                return result.ToArray();
+            }
+        }
     }
 }

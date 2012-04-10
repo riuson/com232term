@@ -80,23 +80,25 @@ namespace com232term
             this.tsmiColorTransmitted.ForeColor = this.mLogger.LogOptions.TransmittedColor;
             this.tsmiColorSystem.ForeColor = this.mLogger.LogOptions.SystemColor;
             this.tsmiColorTime.ForeColor = this.mLogger.LogOptions.TimeColor;
+
+            this.mSender.Settings = Options.Instance.SendOptions;
         }
 
         private void SetDefaultValues()
         {
             this.tscbPortName.Items.Clear();
-            this.tscbPortName.Items.AddRange(Worker.PortsList);
+            this.tscbPortName.Items.AddRange(PortSettings.PortsList);
 
             this.tscbBaudrates.Items.Clear();
-            foreach (int a in Worker.BaudratesList)
+            foreach (int a in PortSettings.BaudratesList)
                 this.tscbBaudrates.Items.Add(a);
 
             this.tscbParity.Items.Clear();
-            foreach (System.IO.Ports.Parity a in Worker.ParitiesList)
+            foreach (System.IO.Ports.Parity a in PortSettings.ParitiesList)
                 this.tscbParity.Items.Add(a);
 
             this.tscbStopBits.Items.Clear();
-            foreach (System.IO.Ports.StopBits a in Worker.StopBitsList)
+            foreach (System.IO.Ports.StopBits a in PortSettings.StopBitsList)
                 this.tscbStopBits.Items.Add(a);
 
             this.tsddbFormat.DropDownItems.Clear();

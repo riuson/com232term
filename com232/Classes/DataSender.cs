@@ -8,13 +8,13 @@ using com232term.Classes.Options;
 
 namespace com232term.Classes
 {
-    public class DataSender : IDataSender
+    public class DataSender : IDataSender, IDisposable
     {
         public BindingList<String> Packets { get; private set; }
         public BindingList<String> PacketsStatic { get; private set; }
         public event EventHandler<CallPacketsEditorEventArgs> OnStaticEditorCall;
         public event EventHandler<SendDataEventArgs> OnSendData;
-        public SendSettings SendOptions { get; set; }
+        public SendSettings Settings { get; set; }
 
         public DataSender()
         {
@@ -26,7 +26,12 @@ namespace com232term.Classes
             this.PacketsStatic.Add("one");
             this.PacketsStatic.Add("two");
 
-            this.SendOptions = new SendSettings();
+            this.Settings = Options.Options.Instance.SendOptions;
+        }
+
+        public void Dispose()
+        {
+            Options.Options.Instance.SendOptions = this.Settings;
         }
 
         public void Send(string packet)
@@ -75,9 +80,9 @@ namespace com232term.Classes
             // value must be: "aa bb cc dd 01 0a 50"...
             Regex regHex = new Regex(@"^([0-9a-f]{2}\s*)+$");
 
-            switch (this.SendOptions.Format)
+            switch (this.Settings.Format)
             {
-                case SendSettings.ParseFormat.Auto:
+                case SendSettings.ParseFormats.Auto:
                     {
                         if (regHex.IsMatch(value))
                         {
@@ -101,7 +106,7 @@ namespace com232term.Classes
                         }
                         break;
                     }
-                case SendSettings.ParseFormat.Hex:
+                case SendSettings.ParseFormats.Hex:
                     {
                         if (regHex.IsMatch(value))
                         {
@@ -109,12 +114,12 @@ namespace com232term.Classes
                         }
                     }
                     break;
-                case SendSettings.ParseFormat.Ascii:
+                case SendSettings.ParseFormats.Ascii:
                     {
                         result = this.StringToBytes(Encoding.ASCII, value);
                         break;
                     }
-                case SendSettings.ParseFormat.Utf8:
+                case SendSettings.ParseFormats.Utf8:
                     {
                         result = this.StringToBytes(Encoding.UTF8, value);
                         break;
@@ -144,21 +149,21 @@ namespace com232term.Classes
         private byte[] StringToBytes(Encoding encoding, string value)
         {
             string str;
-            switch (this.SendOptions.LineEnd)
+            switch (this.Settings.LineEnd)
             {
-                case SendSettings.SendLineEnd.None:
+                case SendSettings.LineEnds.None:
                     str = value;
                     break;
-                case SendSettings.SendLineEnd.N:
+                case SendSettings.LineEnds.N:
                     str = value + "\n";
                     break;
-                case SendSettings.SendLineEnd.R:
+                case SendSettings.LineEnds.R:
                     str = value + "\r";
                     break;
-                case SendSettings.SendLineEnd.NR:
+                case SendSettings.LineEnds.NR:
                     str = value + "\n\r";
                     break;
-                case SendSettings.SendLineEnd.RN:
+                case SendSettings.LineEnds.RN:
                     str = value + "\r\n";
                     break;
                 default:
