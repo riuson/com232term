@@ -7,6 +7,7 @@ using System.ComponentModel;
 using com232term.Classes.Options;
 using System.Drawing;
 using System.IO.Ports;
+using com232term.Classes.Worker;
 
 namespace com232term.Controls.DataSender
 {

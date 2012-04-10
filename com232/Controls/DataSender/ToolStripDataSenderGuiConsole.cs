@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using com232term.Classes;
 using System.ComponentModel;
 using com232term.Classes.Options;
+using com232term.Classes.Sender;
 
 namespace com232term.Controls.DataSender
 {

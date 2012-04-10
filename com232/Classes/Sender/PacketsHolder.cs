@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace com232term.Classes
+namespace com232term.Classes.Sender
 {
     public class PacketsHolder
     {

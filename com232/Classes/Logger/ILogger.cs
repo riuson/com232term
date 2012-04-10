@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using com232term.Classes.Options;
+using com232term.Classes.Worker;
 
-namespace com232term.Classes
+namespace com232term.Classes.Logger
 {
     public interface ILogger
     {

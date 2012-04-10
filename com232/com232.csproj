@@ -44,23 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\DataSender.cs" />
+    <Compile Include="Classes\Sender\DataSender.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />
-    <Compile Include="Classes\IDataSender.cs" />
-    <Compile Include="Classes\ILogger.cs" />
-    <Compile Include="Classes\IWorker.cs" />
-    <Compile Include="Classes\Logger.cs" />
+    <Compile Include="Classes\Sender\IDataSender.cs" />
+    <Compile Include="Classes\Logger\ILogger.cs" />
+    <Compile Include="Classes\Worker\IWorker.cs" />
+    <Compile Include="Classes\Logger\Logger.cs" />
     <Compile Include="Classes\Options\LogSettings.cs" />
     <Compile Include="Classes\Options\Options.cs" />
     <Compile Include="Classes\Options\PortSettings.cs" />
     <Compile Include="Classes\Options\ColorSerialized.cs" />
     <Compile Include="Classes\Options\SendSettings.cs" />
-    <Compile Include="Classes\PacketsHolder.cs" />
+    <Compile Include="Classes\Sender\PacketsHolder.cs" />
     <Compile Include="Classes\RichTextBoxExt.cs" />
     <Compile Include="Classes\SerialPortFixed.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\Worker.cs" />
+    <Compile Include="Classes\Worker\Worker.cs" />
     <Compile Include="Controls\Connection\ToolStripConnectionGui.cs">
       <SubType>Component</SubType>
     </Compile>

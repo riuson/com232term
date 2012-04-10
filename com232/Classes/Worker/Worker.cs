@@ -5,7 +5,7 @@ using System.IO.Ports;
 using System.Threading;
 using com232term.Classes.Options;
 
-namespace com232term.Classes
+namespace com232term.Classes.Worker
 {
     public class Worker : IWorker, IDisposable
     {

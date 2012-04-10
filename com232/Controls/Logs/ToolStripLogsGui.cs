@@ -6,6 +6,7 @@ using com232term.Classes;
 using System.ComponentModel;
 using com232term.Classes.Options;
 using System.Drawing;
+using com232term.Classes.Logger;
 
 namespace com232term.Controls.DataSender
 {

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using com232term.Classes.Options;
 
-namespace com232term.Classes
+namespace com232term.Classes.Sender
 {
     public class DataSender : IDataSender, IDisposable
     {

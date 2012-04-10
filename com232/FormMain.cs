@@ -9,6 +9,9 @@ using com232term.Classes;
 using com232term.Classes.Options;
 using com232term.Controls.DataSender;
 using com232term.Forms;
+using com232term.Classes.Worker;
+using com232term.Classes.Logger;
+using com232term.Classes.Sender;
 
 namespace com232term
 {

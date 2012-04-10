@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using com232term.Classes;
+using com232term.Classes.Sender;
 
 namespace com232term.Controls.DataSender
 {

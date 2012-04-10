@@ -4,8 +4,9 @@ using System.Text;
 using com232term.Classes.Options;
 using System.Windows.Forms;
 using System.Drawing;
+using com232term.Classes.Worker;
 
-namespace com232term.Classes
+namespace com232term.Classes.Logger
 {
     public class Logger : ILogger, IDisposable
     {
