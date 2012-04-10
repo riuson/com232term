@@ -233,6 +233,12 @@ namespace com232term.Classes
                 lock (this.mPort)
                 {
                     this.mPort.Write(value, 0, value.Length);
+
+                    this.EnqueueOutgoingTask(delegate()
+                    {
+                        if (this.OnDataLog != null)
+                            this.OnDataLog(this, new DataLogEventArgs(Direction.Transmitted, value));
+                    });
                 }
             });
         }
