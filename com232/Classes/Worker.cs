@@ -232,13 +232,23 @@ namespace com232term.Classes
             {
                 lock (this.mPort)
                 {
-                    this.mPort.Write(value, 0, value.Length);
-
-                    this.EnqueueOutgoingTask(delegate()
+                    if (this.mPort.IsOpen)
                     {
-                        if (this.OnDataLog != null)
-                            this.OnDataLog(this, new DataLogEventArgs(Direction.Transmitted, value));
-                    });
+                        this.mPort.Write(value, 0, value.Length);
+
+                        this.EnqueueOutgoingTask(delegate()
+                        {
+                            if (this.OnDataLog != null)
+                                this.OnDataLog(this, new DataLogEventArgs(Direction.Transmitted, value));
+                        });
+                    }
+                    else
+                    {
+                        this.EnqueueOutgoingTask(delegate()
+                        {
+                            this.LogMessage("Unable to send data: port closed!");
+                        });
+                    }
                 }
             });
         }
