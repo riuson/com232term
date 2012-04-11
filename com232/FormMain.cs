@@ -42,7 +42,11 @@ namespace com232term
 
             this.toolStripViewGui.OnToolBarsVisibleChanging += new EventHandler(toolStripViewGui_OnToolBarsVisibleChanging);
 
-            ToolStripManager.LoadSettings(this);
+            // load toolstrip layout only when version not changed
+            if (Options.Instance.VersionSaved == com232term.Properties.Resources.version_included)
+                ToolStripManager.LoadSettings(this);
+            else
+                Options.Instance.VersionSaved = com232term.Properties.Resources.version_included;
         }
 
         private void BeforeDisposing()
