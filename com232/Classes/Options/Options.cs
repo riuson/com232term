@@ -23,12 +23,14 @@ namespace com232term.Classes.Options
         public PortSettings PortOptions { get; set; }
         public LogSettings LogOptions { get; set; }
         public SendSettings SendOptions { get; set; }
+        public ViewSettings ViewOptions { get; set; }
 
         private Options ()
 	    {
             this.PortOptions = new PortSettings();
             this.LogOptions = new LogSettings();
             this.SendOptions = new SendSettings();
+            this.ViewOptions = new ViewSettings();
 	    }
 
         public static string FileName

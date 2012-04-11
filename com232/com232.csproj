@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Options\ViewSettings.cs" />
     <Compile Include="Classes\Sender\DataSender.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />
     <Compile Include="Classes\Sender\IDataSender.cs" />
@@ -77,6 +78,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Logs\ToolStripLogsGui.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\View\ToolStripViewGui.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="FormMain.cs">

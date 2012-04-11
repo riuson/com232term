@@ -40,6 +40,8 @@ namespace com232term
             this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
 
+            this.toolStripViewGui.OnToolBarsVisibleChanging += new EventHandler(toolStripViewGui_OnToolBarsVisibleChanging);
+
             ToolStripManager.LoadSettings(this);
         }
 
@@ -73,6 +75,12 @@ namespace com232term
         private void mSender_OnSendData(object sender, SendDataEventArgs e)
         {
             this.mWorker.Send(e.Data);
+        }
+
+        private void toolStripViewGui_OnToolBarsVisibleChanging(object sender, EventArgs e)
+        {
+            this.toolStripDataSenderGuiButtonsLast.Visible = this.toolStripViewGui.Settings.ShowLastPackets;
+            this.toolStripDataSenderGuiButtonsStatic.Visible = this.toolStripViewGui.Settings.ShowStaticPackets;
         }
     }
 }
