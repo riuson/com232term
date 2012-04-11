@@ -51,7 +51,7 @@ namespace com232term.Classes.Sender
             }
         }
 
-        public void CallStatisPacketsEditor()
+        public void CallStaticPacketsEditor()
         {
             if (this.OnStaticEditorCall != null)
             {

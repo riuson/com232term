@@ -11,7 +11,7 @@ namespace com232term.Classes.Sender
         BindingList<String> Packets { get; }
         BindingList<String> PacketsStatic { get; }
         void Send(string packet);
-        void CallStatisPacketsEditor();
+        void CallStaticPacketsEditor();
         SendSettings Settings { get; }
     }
 }

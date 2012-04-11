@@ -101,7 +101,7 @@ namespace com232term.Controls.DataSender
         {
             if (this.mSender != null)
             {
-                this.mSender.CallStatisPacketsEditor();
+                this.mSender.CallStaticPacketsEditor();
             }
         }
     }
