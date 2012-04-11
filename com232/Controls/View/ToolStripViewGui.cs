@@ -70,6 +70,10 @@ namespace com232term.Controls.View
 
         private void mButtonAbout_Click(object sender, EventArgs e)
         {
+            using (com232term.Forms.About dialog = new Forms.About())
+            {
+                dialog.ShowDialog();
+            }
         }
 
         private void ReflectSettingsToGui()
