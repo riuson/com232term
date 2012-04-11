@@ -39,10 +39,13 @@ namespace com232term
             this.toolStripConsole.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsLast.Sender = this.mSender;
             this.toolStripDataSenderGuiButtonsStatic.Sender = this.mSender;
+
+            ToolStripManager.LoadSettings(this);
         }
 
         private void BeforeDisposing()
         {
+            ToolStripManager.SaveSettings(this);
             com232term.Classes.Options.Options.Save();
             this.mWorker.Dispose();
             this.mSender.Dispose();
