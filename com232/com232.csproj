@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\EnumTypeConverter.cs" />
     <Compile Include="Classes\Options\ViewSettings.cs" />
     <Compile Include="Classes\Sender\DataSender.cs" />
     <Compile Include="Classes\ExtensionAttribute.cs" />

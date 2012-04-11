@@ -29,7 +29,8 @@ namespace com232term.Controls.DataSender
                 Alignment = ToolStripItemAlignment.Right,
                 Text = "\\n",
                 AutoSize = false,
-                Width = 50
+                Width = 50,
+                ToolTipText = "Line endings"
             };
 
             this.mButtonFormat = new ToolStripDropDownButton()
@@ -37,7 +38,8 @@ namespace com232term.Controls.DataSender
                 Alignment = ToolStripItemAlignment.Right,
                 Text = "None",
                 AutoSize = false,
-                Width = 50
+                Width = 50,
+                ToolTipText = "Send format"
             };
 
             this.mButtonSend = new ToolStripButton()
@@ -119,9 +121,11 @@ namespace com232term.Controls.DataSender
 
         private void SetDefaults()
         {
+            EnumTypeConverter conv = new EnumTypeConverter(typeof(SendSettings.LineEnds));
             foreach (com232term.Classes.Options.SendSettings.LineEnds a in SendSettings.LineEndsList)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem() { Tag = a, Text = a.ToString(), CheckOnClick = true };
+                string b = conv.ConvertToString(a);
+                ToolStripMenuItem item = new ToolStripMenuItem() { Tag = a, Text = b, CheckOnClick = true };
                 item.Click += new EventHandler(itemLineEnd_Click);
                 this.mButtonLineEnd.DropDownItems.Add(item);
             }
@@ -147,7 +151,8 @@ namespace com232term.Controls.DataSender
                     menuItem.Checked = (end == this.mSender.Settings.LineEnd);
                 }
             }
-            this.mButtonLineEnd.Text = this.mSender.Settings.LineEnd.ToString();
+            EnumTypeConverter conv = new EnumTypeConverter(typeof(SendSettings.LineEnds));
+            this.mButtonLineEnd.Text = conv.ConvertToString(this.mSender.Settings.LineEnd);
 
             foreach (ToolStripItem item in this.mButtonFormat.DropDownItems)
             {

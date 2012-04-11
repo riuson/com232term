@@ -8,10 +8,10 @@ namespace com232term.Classes.Options
 {
     public class SendSettings
     {
-        [TypeConverter(typeof(EnumConverter))]
+        [TypeConverter(typeof(EnumTypeConverter))]
         public enum LineEnds
         {
-            [Description("None")]
+            [Description("none")]
             None,
             [Description(@"\n")]
             N,
