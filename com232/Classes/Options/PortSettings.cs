@@ -13,12 +13,16 @@ namespace com232term.Classes.Options
             this.Parity = System.IO.Ports.Parity.None;
             this.Baudrate = 57600;
             this.StopBits = System.IO.Ports.StopBits.One;
+            this.RtsEnable = false;
+            this.DtrEnable = false;
         }
 
         public string PortName { get; set; }
         public Parity Parity { get; set; }
         public int Baudrate { get; set; }
         public StopBits StopBits { get; set; }
+        public bool RtsEnable { get; set; }
+        public bool DtrEnable { get; set; }
 
         public override string ToString()
         {

@@ -114,7 +114,9 @@ namespace com232term.Classes.Worker
                 if (this.mPort.PortName != this.Settings.PortName.ExtractPortName() ||
                     this.mPort.BaudRate != this.Settings.Baudrate ||
                     this.mPort.Parity != this.Settings.Parity ||
-                    this.mPort.StopBits != this.Settings.StopBits)
+                    this.mPort.StopBits != this.Settings.StopBits ||
+                    this.mPort.RtsEnable != this.Settings.RtsEnable ||
+                    this.mPort.DtrEnable != this.Settings.DtrEnable)
                 {
                     bool opened = this.mPort.IsOpen;
                     if (opened)
@@ -124,18 +126,21 @@ namespace com232term.Classes.Worker
                     this.mPort.BaudRate = this.Settings.Baudrate;
                     this.mPort.Parity = this.Settings.Parity;
                     this.mPort.StopBits = this.Settings.StopBits;
-                    //this.mPort.
+                    this.mPort.RtsEnable = this.Settings.RtsEnable;
+                    this.mPort.DtrEnable = this.Settings.DtrEnable;
 
                     if (opened)
                         this.mPort.Open();
 
                     this.EnqueueOutgoingTask(delegate()
                     {
-                        this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}",
+                        this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}{4}{5}",
                             this.Settings.PortName,
                             this.Settings.Baudrate,
                             this.Settings.Parity,
-                            this.Settings.StopBits));
+                            this.Settings.StopBits,
+                            this.Settings.RtsEnable ? ", RTS" : "",
+                            this.Settings.DtrEnable ? ", DTR" : ""));
                     });
                 }
 
@@ -150,11 +155,13 @@ namespace com232term.Classes.Worker
                             if (this.OnConnectionChanged != null)
                                 this.OnConnectionChanged(this, EventArgs.Empty);
 
-                            this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}",
+                            this.LogMessage(String.Format("Port opened: {0}, {1}, {2}, {3}{4}{5}",
                                 this.Settings.PortName,
                                 this.Settings.Baudrate,
                                 this.Settings.Parity,
-                                this.Settings.StopBits));
+                                this.Settings.StopBits,
+                                this.Settings.RtsEnable ? ", RTS" : "",
+                                this.Settings.DtrEnable ? ", DTR" : ""));
                         });
                     }
                     else

@@ -18,6 +18,8 @@ namespace com232term.Controls.DataSender
         private ToolStripComboBox mComboBoxBaudate;
         private ToolStripComboBox mComboBoxParity;
         private ToolStripComboBox mComboBoxStopBits;
+        private ToolStripMenuItem mMenuItemRtsEnable;
+        private ToolStripMenuItem mMenuItemDtrEnable;
         private IWorker mWorker;
 
         public ToolStripConnectionGui()
@@ -56,9 +58,15 @@ namespace com232term.Controls.DataSender
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
             this.mComboBoxStopBits.SelectedIndexChanged += new EventHandler(mComboBoxStopBits_SelectedIndexChanged);
-            
+
+            this.mMenuItemRtsEnable = new ToolStripMenuItem("RTS");
+            this.mMenuItemRtsEnable.Click += new EventHandler(mMenuItemRtsEnable_Click);
+
+            this.mMenuItemDtrEnable = new ToolStripMenuItem("DTR");
+            this.mMenuItemDtrEnable.Click += new EventHandler(mMenuItemDtrEnable_Click);
+
             this.Items.Add(this.mButtonConnect);
-            this.mButtonConnect.DropDownItems.AddRange(new ToolStripItem[] { this.mComboBoxPort, this.mComboBoxBaudate, this.mComboBoxParity, this.mComboBoxStopBits });
+            this.mButtonConnect.DropDownItems.AddRange(new ToolStripItem[] { this.mComboBoxPort, this.mComboBoxBaudate, this.mComboBoxParity, this.mComboBoxStopBits, this.mMenuItemRtsEnable, this.mMenuItemDtrEnable });
 
             this.mWorker = null;
         }
@@ -108,6 +116,20 @@ namespace com232term.Controls.DataSender
                 bits = (StopBits)this.mComboBoxStopBits.SelectedItem;
             if (this.mWorker != null)
                 this.mWorker.Settings.StopBits = bits;
+        }
+
+        private void mMenuItemRtsEnable_Click(object sender, EventArgs e)
+        {
+            if (this.mWorker != null)
+                this.mWorker.Settings.RtsEnable = !this.mWorker.Settings.RtsEnable;
+            this.ReflectSettingsToGui();
+        }
+
+        private void mMenuItemDtrEnable_Click(object sender, EventArgs e)
+        {
+            if (this.mWorker != null)
+                this.mWorker.Settings.DtrEnable = !this.mWorker.Settings.DtrEnable;
+            this.ReflectSettingsToGui();
         }
 
         [Browsable(false)]
@@ -164,20 +186,27 @@ namespace com232term.Controls.DataSender
                 state = "Open";
 
             this.mButtonConnect.Text = String.Format(
-                "{4}: {0}, {1}, {2}, {3}",
+                "{0}: {1}, {2}, {3}, {4}{5}{6}",
+                state,
                 this.mWorker.Settings.PortName.ExtractPortName(),
                 this.mWorker.Settings.Baudrate,
                 this.mWorker.Settings.Parity,
                 this.mWorker.Settings.StopBits,
-                state);
+                this.mWorker.Settings.RtsEnable ? ", RTS" : "",
+                this.mWorker.Settings.DtrEnable ? ", DTR" : "");
 
             this.mButtonConnect.ToolTipText = String.Format(
-                "{4}: {0}, {1}, {2}, {3}",
+                "{0}: {1}, {2}, {3}, {4}{5}{6}",
+                state,
                 this.mWorker.Settings.PortName,
                 this.mWorker.Settings.Baudrate,
                 this.mWorker.Settings.Parity,
                 this.mWorker.Settings.StopBits,
-                state);
+                this.mWorker.Settings.RtsEnable ? ", RTS" : "",
+                this.mWorker.Settings.DtrEnable ? ", DTR" : "");
+
+            this.mMenuItemRtsEnable.Checked = this.mWorker.Settings.RtsEnable;
+            this.mMenuItemDtrEnable.Checked = this.mWorker.Settings.DtrEnable;
         }
     }
 }
