@@ -59,5 +59,14 @@ namespace com232term.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на d6d27e6 Wed Apr 11 19:26:19 2012 +0600.
+        /// </summary>
+        internal static string version_included {
+            get {
+                return ResourceManager.GetString("version_included", resourceCulture);
+            }
+        }
     }
 }
