@@ -28,7 +28,7 @@ namespace com232term.Controls.DataSender
             {
                 Text = "Connect"
             };
-            this.mButtonConnect.Click += new EventHandler(mButtonConnect_Click);
+            this.mButtonConnect.ButtonClick += new EventHandler(mButtonConnect_Click);
 
             this.mComboBoxPort = new ToolStripComboBox()
             {
