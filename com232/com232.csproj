@@ -63,6 +63,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\Worker\Worker.cs" />
+    <Compile Include="Classes\Worker\WorkerThread.cs" />
     <Compile Include="Controls\Connection\ToolStripConnectionGui.cs">
       <SubType>Component</SubType>
     </Compile>
