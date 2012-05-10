@@ -1,13 +1,15 @@
 @echo off
 echo copy version info
-if not exist %1 goto File1NotFound
+set source=%1version-included.txt
+set destination=%2version-included.txt
 
-xcopy %1 %2 /F /Y & goto END
+if not exist %source% goto FileNotFound
+xcopy %source% %2 /D /Y & goto END
 
-:File1NotFound
-echo %1 not found.
+:FileNotFound
+echo %source% not found.
 echo generating...
-echo "empty" > %2
+echo "empty" > %destination%
 goto END
 
 :END

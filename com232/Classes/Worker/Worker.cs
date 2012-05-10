@@ -9,15 +9,10 @@ namespace com232term.Classes.Worker
 {
     public class Worker : IWorker, IDisposable
     {
-        private Thread mThread;
-        private bool mNeedStop;
-        private AutoResetEvent mStopEvent;
-        private Queue<ThreadedMethod> mIncomingTasksQueue;
-        private Queue<ThreadedMethod> mOutgoingTasksQueue;
         private SerialPortFixed mPort;
         private bool mDataReceived;
-        private System.Windows.Forms.Timer mTimerSync;
         private bool mPortOpenedLastState;
+        private WorkerThread mThread;
 
         public PortSettings Settings { get; private set; }
         public event EventHandler<DataLogEventArgs> OnDataLog;
@@ -27,41 +22,24 @@ namespace com232term.Classes.Worker
         public Worker()
         {
             this.Settings = Options.Options.Instance.PortOptions;
-            this.mStopEvent = new AutoResetEvent(false);
-            this.mIncomingTasksQueue = new Queue<ThreadedMethod>();
-            this.mOutgoingTasksQueue = new Queue<ThreadedMethod>();
-            this.mNeedStop = false;
             this.mPort = new SerialPortFixed(this.Settings.PortName, this.Settings.Baudrate, this.Settings.Parity, 8, this.Settings.StopBits);
-            this.mThread = new Thread(new ThreadStart(this.Work));
+            this.mThread = new WorkerThread();
             this.mDataReceived = false;
             this.mPortOpenedLastState = false;
 
-            this.mTimerSync = new System.Windows.Forms.Timer();
-            this.mTimerSync.Interval = 500;
-            this.mTimerSync.Tick += new EventHandler(mTimerSync_Tick);
-            this.mTimerSync.Start();
-
-            this.mThread.Start();
+            this.mThread.Idle = this.IdleMethod;
         }
 
         public void Dispose()
         {
-            this.mTimerSync.Stop();
-            this.mStopEvent.Reset();
-            this.mNeedStop = true;
-            this.mStopEvent.WaitOne();
+            this.mThread.Dispose();
             Options.Options.Instance.PortOptions = this.Settings;
         }
 
-        private void Work()
+        public void IdleMethod()
         {
-            while (!this.mNeedStop)
+            if (this.CheckPortSettings())
             {
-                Thread.Sleep(100);
-
-                if (!this.CheckPortSettings())
-                    continue;
-
                 if (this.mDataReceived)
                 {
                     this.mDataReceived = false;
@@ -81,27 +59,14 @@ namespace com232term.Classes.Worker
                     }
                     if (readedBytes != null && readedBytes.Length > 0)
                     {
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnDataLog != null)
                                 this.OnDataLog(this, new DataLogEventArgs(Direction.Received, readedBytes));
                         });
                     }
                 }
-
-                // execute new incoming tasks
-                ThreadedMethod task = null;
-                lock (this.mIncomingTasksQueue)
-                {
-                    if (this.mIncomingTasksQueue.Count > 0)
-                        task = this.mIncomingTasksQueue.Dequeue();
-                }
-                if (task != null)
-                {
-                    task();
-                }
             }
-            this.mStopEvent.Set();
         }
 
         private bool CheckPortSettings()
@@ -132,7 +97,7 @@ namespace com232term.Classes.Worker
                     if (opened)
                         this.mPort.Open();
 
-                    this.EnqueueOutgoingTask(delegate()
+                    this.mThread.EnqueueOutgoingTask(delegate()
                     {
                         this.LogMessage(String.Format("Port settins changed to: {0}, {1}, {2}, {3}{4}{5}",
                             this.Settings.PortName,
@@ -150,7 +115,7 @@ namespace com232term.Classes.Worker
 
                     if (this.mPortOpenedLastState)
                     {
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnConnectionChanged != null)
                                 this.OnConnectionChanged(this, EventArgs.Empty);
@@ -166,7 +131,7 @@ namespace com232term.Classes.Worker
                     }
                     else
                     {
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnConnectionChanged != null)
                                 this.OnConnectionChanged(this, EventArgs.Empty);
@@ -193,7 +158,7 @@ namespace com232term.Classes.Worker
 
         public void Open()
         {
-            this.EnqueueIncomingTask(delegate()
+            this.mThread.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
@@ -204,7 +169,7 @@ namespace com232term.Classes.Worker
                     }
                     else
                     {
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnConnectionChanged != null)
                                 this.OnConnectionChanged(this, EventArgs.Empty);
@@ -223,7 +188,7 @@ namespace com232term.Classes.Worker
 
         public void Close()
         {
-            this.EnqueueIncomingTask(delegate()
+            this.mThread.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
@@ -235,7 +200,7 @@ namespace com232term.Classes.Worker
 
         public void Send(byte []value)
         {
-            this.EnqueueIncomingTask(delegate()
+            this.mThread.EnqueueIncomingTask(delegate()
             {
                 lock (this.mPort)
                 {
@@ -243,7 +208,7 @@ namespace com232term.Classes.Worker
                     {
                         this.mPort.Write(value, 0, value.Length);
 
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             if (this.OnDataLog != null)
                                 this.OnDataLog(this, new DataLogEventArgs(Direction.Transmitted, value));
@@ -251,7 +216,7 @@ namespace com232term.Classes.Worker
                     }
                     else
                     {
-                        this.EnqueueOutgoingTask(delegate()
+                        this.mThread.EnqueueOutgoingTask(delegate()
                         {
                             this.LogMessage("Unable to send data: port closed!");
                         });
@@ -273,45 +238,12 @@ namespace com232term.Classes.Worker
             }
         }
 
-        private void mTimerSync_Tick(object sender, EventArgs e)
-        {
-            ThreadedMethod[] tasks = new ThreadedMethod[0];
-            lock (this.mOutgoingTasksQueue)
-            {
-                tasks = this.mOutgoingTasksQueue.ToArray();
-                this.mOutgoingTasksQueue.Clear();
-            }
-            foreach (ThreadedMethod task in tasks)
-            {
-                if (task.Method != null)
-                    task();
-            }
-        }
-
         private void LogMessage(string message)
         {
             if (this.OnMessageLog != null)
                 this.OnMessageLog(this, new MessageLogEventArgs(message));
         }
-
-        private void EnqueueIncomingTask(ThreadedMethod task)
-        {
-            lock (this.mIncomingTasksQueue)
-            {
-                this.mIncomingTasksQueue.Enqueue(task);
-            }
-        }
-
-        private void EnqueueOutgoingTask(ThreadedMethod task)
-        {
-            lock (this.mOutgoingTasksQueue)
-            {
-                this.mOutgoingTasksQueue.Enqueue(task);
-            }
-        }
     }
-
-    public delegate void ThreadedMethod();
 
     public class DataLogEventArgs : EventArgs
     {

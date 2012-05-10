@@ -76,7 +76,7 @@ namespace com232term.Classes.Sender
 
             // check for hex
             // value must be: "aa bb cc dd 01 0a 50"...
-            Regex regHex = new Regex(@"^([0-9a-f]{2}\s*)+$");
+            Regex regHex = new Regex(@"^([0-9a-f]{2}\s*)+$", RegexOptions.IgnoreCase);
 
             switch (this.Settings.Format)
             {
